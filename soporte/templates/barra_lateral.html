@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}{% endblock title %}
+    </title>
+</head>
+<body>
+    <header>
+        <h2>SOPORTE TÉCNICO FISI</h2>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="{% url 'soporte:incidencias' %}">INCIDENCIAS</a></li>
+            <li><a href="">AULAS</a></li>
+            <li><a href="">PERFIL</a></li>
+            <li><a href="{% url 'soporte:login' %}">SALIR</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock content %}
+    </main>
+
+    <footer>
+        <p>© 2024 No Compila</p>
+    </footer>
+
+</body>
+</html>

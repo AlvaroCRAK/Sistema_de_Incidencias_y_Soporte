@@ -5,3 +5,18 @@ from django.views import View
 class LoginView(View):
     def get(self, request, *args, **kwargs):
         return render(request, "usuario_login.html")
+    
+
+class ReportarView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "usuario_reportar.html")
+    
+    
+class HistorialView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "usuario_historial.html")
+    
+
+class PreguntasView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "usuario_preguntas.html")
