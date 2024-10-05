@@ -67,7 +67,7 @@ MIDDLEWARE = [
     "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
-tienen que poner su path de npm
+# tienen que poner su path de npm
 # NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 ROOT_URLCONF = 'core.urls'
