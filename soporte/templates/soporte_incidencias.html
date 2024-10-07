@@ -3,38 +3,52 @@
 {% block title %}Incidencias{% endblock title %}
 
 {% block content %}
-
-    <h2>INCIDENCIAS [2024-09-30]</h2>
-    
-    <div>
-        <p>Cantidad de incidencias reportadas</p>
-        <h2>19</h2>
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold">INCIDENCIAS [2024-09-30]</h2>
+        <button class="bg-yellow-500 text-white font-bold py-2 px-4 rounded hover:bg-yellow-600 transition duration-200">PDF</button>
     </div>
 
-    <div>
-        <p>Incidencias atendidas</p>
-        <h2>16</h2>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-blue-500 text-white rounded-lg shadow p-4 text-center">
+            <p class="text-sm">Cantidad de incidencias reportadas</p>
+            <h2 class="text-3xl font-bold">19</h2>
+        </div>
+
+        <div class="bg-green-500 text-white rounded-lg shadow p-4 text-center">
+            <p class="text-sm">Incidencias atendidas</p>
+            <h2 class="text-3xl font-bold">16</h2>
+        </div>
+
+        <div class="bg-yellow-500 text-white rounded-lg shadow p-4 text-center">
+            <p class="text-sm">Incidencias en atención</p>
+            <h2 class="text-3xl font-bold">3</h2>
+        </div>
+
+        <div class="bg-red-500 text-white rounded-lg shadow p-4 text-center">
+            <p class="text-sm">Incidencias por atender</p>
+            <h2 class="text-3xl font-bold">3</h2>
+        </div>
     </div>
 
-    <div>
-        <p>Incidencias en atencion</p>
-        <h2>3</h2>
+    <div class="bg-white rounded-lg shadow p-4 mb-6">
+        <p class="font-bold mb-2">Incidencia [12:30:20]</p>
+        <p><span class="font-semibold">Aula:</span> NP-101</p>
+        <p><span class="font-semibold">Categoría:</span> Hardware</p>
+        <p><span class="font-semibold">Descripción:</span> ...</p>
+        <div class="mt-4 flex space-x-2">
+            <button class="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 transition duration-200">Atender</button>
+            <button class="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition duration-200">Archivar</button>
+        </div>
     </div>
 
-    <div>
-        <p>Incidencias por atender</p>
-        <h2>3</h2>
+    <div class="bg-white rounded-lg shadow p-4 mb-6">
+        <p class="font-bold mb-2">Incidencia [12:30:20]</p>
+        <p><span class="font-semibold">Aula:</span> NP-101</p>
+        <p><span class="font-semibold">Categoría:</span> Hardware</p>
+        <p><span class="font-semibold">Descripción:</span> ...</p>
+        <div class="mt-4 flex space-x-2">
+            <button class="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 transition duration-200">Atender</button>
+            <button class="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition duration-200">Archivar</button>
+        </div>
     </div>
-
-    <div>
-        <button>PDF</button>
-        <p>Incidencia [12:30:20]</p>
-        <p>Aula</p>
-        <p>Categoria</p>
-        <p>Descripcion</p>
-
-        <button>Atender</button>
-        <button>Archivar</button>
-    </div>
-
 {% endblock content %}
