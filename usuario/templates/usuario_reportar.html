@@ -5,18 +5,90 @@
 {% block content %}
 
     <h2>Incidencia [2024-09-30]</h2>
-    
-    <p>Emisor</p>
-    <p>Pabellon</p>
-    <p>Tipo</p>
-    <p>Aula</p>
 
-    <p>Categoria</p>
-    <p>Descripcion</p>
-    <p>Otro</p>
+    <form method="post">
 
-    <button>Añadir</button>
-    <button>Enviar</button>
-    <button>Cancelar</button>
+        {% csrf_token %}
+
+
+        <div class="flex flex-wrap -mx-3 mb-6">
+
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ form.id_emisor.id_for_label }}">
+
+                    {{ form.id_emisor.label }}
+
+                </label>
+
+                {{ form.id_emisor }}
+
+            </div>
+
+
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ form.id_receptor.id_for_label }}">
+
+                    {{ form.id_receptor.label }}
+
+                </label>
+
+                {{ form.id_receptor }}
+
+            </div>
+
+
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ form.id_salon.id_for_label }}">
+
+                    {{ form.id_salon.label }}
+
+                </label>
+
+                {{ form.id_salon }}
+
+            </div>
+
+
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ form.id_categoria.id_for_label }}">
+
+                    {{ form.id_categoria.label }}
+
+                </label>
+
+                {{ form.id_categoria }}
+
+            </div>
+
+
+            <!-- Repeat the above pattern for each form field -->
+
+
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ form.detalles_categoria.id_for_label }}">
+
+                    {{ form.detalles_categoria.label }}
+
+                </label>
+
+                {{ form.detalles_categoria }}
+
+            </div>
+
+        </div>
+
+
+        <button>Añadir</button>
+
+        <button type="submit">Enviar</button>
+
+        <button type="reset">Cancelar</button>
+
+    </form>
 
 {% endblock content %}
