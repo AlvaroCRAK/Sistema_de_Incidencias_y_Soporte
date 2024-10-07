@@ -1,0 +1,33 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}{% endblock title %}
+    </title>
+
+    {% tailwind_css %}
+</head>
+<body class="flex bg-gray-100 min-h-screen">
+    <aside class="w-64 bg-blue-800 shadow-md h-screen">
+        <header class="p-4 bg-yellow-500 text-white text-center font-semibold">
+            SOPORTE TÉCNICO FISI
+        </header>
+        <nav class="mt-4">
+            <ul class="space-y-2">
+                <li><a href="{% url 'soporte:incidencias' %}" class="block px-4 py-2 text-white bg-blue-700 hover:bg-blue-600 transition">INCIDENCIAS</a></li>
+                <li><a href="" class="block px-4 py-2 text-white hover:bg-blue-600 transition">AULAS</a></li>
+                <li><a href="" class="block px-4 py-2 text-white hover:bg-blue-600 transition">PERFIL</a></li>
+                <li><a href="{% url 'soporte:login' %}" class="block px-4 py-2 text-white hover:bg-blue-600 transition">SALIR</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="flex-1 p-6">
+        {% block content %}{% endblock content %}
+    </main>
+</body>
+</html>
+

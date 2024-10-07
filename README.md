@@ -1,1 +1,1 @@
-# Sistema de Incidencias y Soporte
+# Sistema de Incidencias y Soporte.
