@@ -68,7 +68,7 @@ MIDDLEWARE = [
 ]
 
 # tienen que poner su path de npm
-# NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 ROOT_URLCONF = 'core.urls'
 
@@ -141,6 +141,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "soporte" / "static",  # Añade la ruta específica de tu aplicación
+    BASE_DIR / "usuario" / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
