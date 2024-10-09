@@ -5,17 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usuario Login</title>
-
+    
     {% tailwind_css %}
-
+    <style>
+        body {
+            background-image: url('{% static "fondo_fisi.jpeg" %}');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
 </head>
-<body>
-    
-    <h2>BIENVENIDO AL SISTEMA DE INCIDENCIAS FISI</h2>
-    
-    <a href="{% url 'usuario:reportar' %}">
-        <button>Ingresar</button>
-    </a>
+<body class="relative flex items-center justify-center min-h-screen">
+    <!-- Overlay oscuro para oscurecer la imagen de fondo -->
+    <div class="absolute inset-0 bg-black opacity-40"></div>
 
+    <div class="relative bg-white rounded-lg shadow-xl p-8 max-w-md w-full bg-opacity-95">
+        <h2 class="text-2xl font-semibold text-center mb-6 text-[#1e3984]">BIENVENIDO AL SISTEMA DE INCIDENCIAS FISI</h2>
+        
+        <a href="{% url 'usuario:reportar' %}">
+            <button class="bg-[#1198d2] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#1478b0] transition duration-200 w-full">Ingresar</button>
+        </a>
+    </div>
 </body>
 </html>

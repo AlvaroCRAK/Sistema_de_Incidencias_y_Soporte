@@ -1,94 +1,62 @@
-{% extends "barra_lateral.html" %}
+{% extends "usuario_barra_lateral.html" %}
 
-{% block title %}Reportar incidencia{% endblock title %}Reportar incidencia
+{% block title %}Reportar incidencia{% endblock title %}
 
 {% block content %}
+    <div class="max-w-4xl mx-auto p-8 bg-white shadow-md rounded-lg">
+        <h2 class="text-2xl font-semibold mb-6 text-gray-800">Incidencia [2024-09-30]</h2>
 
-    <h2>Incidencia [2024-09-30]</h2>
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
 
-    <form method="post">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700" for="{{ form.id_emisor.id_for_label }}">
+                        {{ form.id_emisor.label }}
+                    </label>
+                    {{ form.id_emisor }}
+                </div>
 
-        {% csrf_token %}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700" for="{{ form.id_receptor.id_for_label }}">
+                        {{ form.id_receptor.label }}
+                    </label>
+                    {{ form.id_receptor }}
+                </div>
 
+                <div>
+                    <label class="block text-sm font-medium text-gray-700" for="{{ form.id_salon.id_for_label }}">
+                        {{ form.id_salon.label }}
+                    </label>
+                    {{ form.id_salon }}
+                </div>
 
-        <div class="flex flex-wrap -mx-3 mb-6">
-
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ form.id_emisor.id_for_label }}">
-
-                    {{ form.id_emisor.label }}
-
-                </label>
-
-                {{ form.id_emisor }}
-
+                <div>
+                    <label class="block text-sm font-medium text-gray-700" for="{{ form.id_categoria.id_for_label }}">
+                        {{ form.id_categoria.label }}
+                    </label>
+                    {{ form.id_categoria }}
+                </div>
             </div>
 
-
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ form.id_receptor.id_for_label }}">
-
-                    {{ form.id_receptor.label }}
-
-                </label>
-
-                {{ form.id_receptor }}
-
-            </div>
-
-
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ form.id_salon.id_for_label }}">
-
-                    {{ form.id_salon.label }}
-
-                </label>
-
-                {{ form.id_salon }}
-
-            </div>
-
-
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ form.id_categoria.id_for_label }}">
-
-                    {{ form.id_categoria.label }}
-
-                </label>
-
-                {{ form.id_categoria }}
-
-            </div>
-
-
-            <!-- Repeat the above pattern for each form field -->
-
-
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="{{ form.detalles_categoria.id_for_label }}">
-
+            <div>
+                <label class="block text-sm font-medium text-gray-700" for="{{ form.detalles_categoria.id_for_label }}">
                     {{ form.detalles_categoria.label }}
-
                 </label>
-
                 {{ form.detalles_categoria }}
-
             </div>
 
-        </div>
-
-
-        <button>Añadir</button>
-
-        <button type="submit">Enviar</button>
-
-        <button type="reset">Cancelar</button>
-
-    </form>
-
+            <div class="flex justify-end space-x-4">
+                <button type="button" class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold rounded-md shadow hover:bg-gray-200">
+                    Añadir
+                </button>
+                <button type="submit" class="py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700">
+                    Enviar
+                </button>
+                <button type="reset" class="py-2 px-4 bg-red-600 text-white font-semibold rounded-md shadow hover:bg-red-700">
+                    Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
 {% endblock content %}

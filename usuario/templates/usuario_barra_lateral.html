@@ -1,0 +1,40 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}{% endblock title %}
+    </title>
+
+    {% tailwind_css %}
+</head>
+<body class="flex bg-gray-100 min-h-screen">
+    <aside class="w-72 bg-[#1e3984] shadow-md h-screen flex flex-col justify-between">
+        <div>
+            <header class="p-4 flex flex-col items-center justify-center bg-[#1e3984] mb-4">
+                <img src="{% static 'logo_fisi.png' %}" alt="Logo FISI" class="h-24 mb-2">
+                <span class="text-[#ffc105] font-semibold text-lg text-center">SOPORTE TÉCNICO FISI</span>
+            </header>
+            <nav class="flex-1 mt-4">
+                <ul class="space-y-4 text-center">
+                    <li><a href="{% url 'usuario:reportar' %}" class="block px-4 py-2 text-white bg-[#1478b0] hover:bg-[#1478b0] transition">REPORTAR INCIDENCIA</a></li>
+                    <li><a href="{% url 'usuario:historial' %}" class="block px-4 py-2 text-white bg-[#1e3984] hover:bg-[#1478b0] transition">HISTORIAL INCIDENCIAS</a></li>
+                    <li><a href="{% url 'usuario:preguntas' %}" class="block px-4 py-2 text-white bg-[#1e3984] hover:bg-[#1478b0] transition">PREGUNTAS FRECUENTES</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="p-4">
+            <a href="{% url 'usuario:login' %}" class="block px-4 py-2 text-white bg-[#1e3984] hover:bg-[#ff3c3c] transition text-center">SALIR</a>
+            <footer class="mt-6 text-center text-sm text-gray-300">
+                <p>© 2024 No Compila</p>
+            </footer>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-6">
+        {% block content %}{% endblock content %}
+    </main>
+</body>
+</html>

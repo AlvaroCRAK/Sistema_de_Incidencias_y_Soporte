@@ -1,7 +1,7 @@
 from django.db import models
 
 class Usuario ( models.Model ):
-    id_usuario = models.AutoField ( primary_key = True );
+    id_usuario = models.AutoField ( primary_key = True )
     nombre_usuario = models.CharField ( max_length = 100, null = False )
 
     def __str__ ( self ):
@@ -46,8 +46,6 @@ class Salon ( models.Model ):
 class Categoria ( models.Model ):
     id_categoria = models.AutoField ( primary_key = True )
     nombre_categoria = models.CharField ( max_length = 100, null = False )
-    id_subcategoria = models.ForeignKey ( 'Subcategoria', null = True, 
-                                        on_delete = models.CASCADE )
     
     def __str__ ( self ):
         return self.nombre_categoria 
@@ -56,7 +54,7 @@ class Categoria ( models.Model ):
 class Subcategoria ( models.Model ):
     id_subcategoria = models.AutoField ( primary_key = True )
     nombre_subcategoria = models.CharField ( max_length = 100, null = False )
-    id_categoria = models.ForeignKey ( Categoria, related_name = 'subcategoria', on_delete = models.CASCADE )
+    id_categoria = models.ForeignKey ( Categoria, db_column = "id_categoria", null = False, on_delete = models.CASCADE )
 
     def __str__ ( self ):
         return self.nombre_subcategoria 
@@ -65,6 +63,7 @@ class Subcategoria ( models.Model ):
 class Descripcion ( models.Model ):
     id_descripcion = models.AutoField ( primary_key = True )
     nombre_descripcion = models.CharField ( max_length = 100, null = False )
+    id_subcategoria = models.ForeignKey( Subcategoria, db_column = "id_subcategoria", null = False, on_delete = models.CASCADE )
 
     def __str__ ( self ):
         return self.nombre_descripcion 

@@ -143,8 +143,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "soporte" / "static",  # Añade la ruta específica de tu aplicación
-    BASE_DIR / "usuario" / "static",
+    os.path.join(BASE_DIR, "static"),
 ]
 
 # Default primary key field type
