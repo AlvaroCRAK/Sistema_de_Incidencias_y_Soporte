@@ -26,7 +26,9 @@ class Incidencia ( models.Model ):
     id_receptor = models.ForeignKey ( Soporte, related_name = 'incidencias_recibidas', 
                                     on_delete = models.CASCADE)
     id_salon = models.ForeignKey ( 'Salon', on_delete = models.CASCADE )
-    id_categoria = models.ForeignKey ( 'Categoria', on_delete = models.CASCADE )
+    id_categoria = models.OneToOneField ( 'Categoria', on_delete = models.CASCADE )
+    id_subcategoria = models.OneToOneField ( 'Subcategoria', on_delete = models.CASCADE )
+    id_descripcion = models.OneToOneField ( 'Descripcion', on_delete = models.CASCADE )
     detalles_categoria = models.TextField ()
 
     def __str__ ( self ):

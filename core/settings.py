@@ -68,7 +68,7 @@ MIDDLEWARE = [
 ]
 
 # tienen que poner su path de npm
-NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+# NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 ROOT_URLCONF = 'core.urls'
 

@@ -1,12 +1,12 @@
 from django import forms
-from soporte.models import Incidencia, Usuario, Soporte, Salon, Categoria
+from soporte.models import Incidencia, Usuario, Soporte, Salon, Categoria, Subcategoria, Descripcion
 
 class IncidenciaForm(forms.ModelForm):
     class Meta:
         model = Incidencia
         fields = (
             "id_incidencia", "estado_incidencia", "id_emisor", "id_receptor",
-            "id_salon", "id_categoria", "detalles_categoria"
+            "id_salon", "id_categoria", "id_subcategoria", "id_descripcion", "detalles_categoria",
         )
         
         widgets = {
@@ -32,3 +32,5 @@ class IncidenciaForm(forms.ModelForm):
     id_receptor = forms.ModelChoiceField(queryset=Soporte.objects.all())
     id_salon = forms.ModelChoiceField(queryset=Salon.objects.all(), label = "Salon")
     id_categoria = forms.ModelChoiceField(queryset=Categoria.objects.all(), label = "Categoria")
+    id_subcategoria = forms.ModelChoiceField(queryset=Subcategoria.objects.all(), label = "Subcategoria")
+    id_descripcion = forms.ModelChoiceField(queryset=Descripcion.objects.all(), label = "Descripcion")
