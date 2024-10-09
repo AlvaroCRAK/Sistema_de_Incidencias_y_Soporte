@@ -5,26 +5,26 @@
 {% block content %}
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-semibold">INCIDENCIAS [2024-09-30]</h2>
-        <button class="bg-yellow-500 text-white font-bold py-2 px-4 rounded hover:bg-yellow-600 transition duration-200">PDF</button>
+        <button class="bg-[#ffc105] text-white font-bold py-2 px-4 rounded hover:bg-[#ffc107] transition duration-200">PDF</button>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div class="bg-blue-500 text-white rounded-lg shadow p-4 text-center">
+        <div class="bg-[#1198d2] text-white rounded-lg shadow p-4 text-center"> <!-- Cambiado a #1198d2 -->
             <p class="text-sm">Cantidad de incidencias reportadas</p>
             <h2 class="text-3xl font-bold">19</h2>
         </div>
 
-        <div class="bg-green-500 text-white rounded-lg shadow p-4 text-center">
+        <div class="bg-[#15bf40] text-white rounded-lg shadow p-4 text-center">
             <p class="text-sm">Incidencias atendidas</p>
             <h2 class="text-3xl font-bold">16</h2>
         </div>
 
-        <div class="bg-yellow-500 text-white rounded-lg shadow p-4 text-center">
+        <div class="bg-[#ffc105] text-white rounded-lg shadow p-4 text-center">
             <p class="text-sm">Incidencias en atención</p>
             <h2 class="text-3xl font-bold">3</h2>
         </div>
 
-        <div class="bg-red-500 text-white rounded-lg shadow p-4 text-center">
+        <div class="bg-[#ff3c3c] text-white rounded-lg shadow p-4 text-center">
             <p class="text-sm">Incidencias por atender</p>
             <h2 class="text-3xl font-bold">3</h2>
         </div>
@@ -36,8 +36,8 @@
         <p><span class="font-semibold">Categoría:</span> Hardware</p>
         <p><span class="font-semibold">Descripción:</span> ...</p>
         <div class="mt-4 flex space-x-2">
-            <button class="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 transition duration-200">Atender</button>
-            <button class="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition duration-200">Archivar</button>
+            <button class="bg-[#15bf40] text-white font-bold py-2 px-4 rounded hover:bg-[#0e9b35] transition duration-200">Atender</button> <!-- Verde normal, se oscurece al pasar el cursor -->
+            <button class="bg-[#ff3c3c] text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition duration-200">Archivar</button>
         </div>
     </div>
 
@@ -47,8 +47,8 @@
         <p><span class="font-semibold">Categoría:</span> Hardware</p>
         <p><span class="font-semibold">Descripción:</span> ...</p>
         <div class="mt-4 flex space-x-2">
-            <button class="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 transition duration-200">Atender</button>
-            <button class="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition duration-200">Archivar</button>
+            <button class="bg-[#15bf40] text-white font-bold py-2 px-4 rounded hover:bg-[#0e9b35] transition duration-200">Atender</button> <!-- Verde normal, se oscurece al pasar el cursor -->
+            <button class="bg-[#ff3c3c] text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition duration-200">Archivar</button>
         </div>
     </div>
 {% endblock content %}

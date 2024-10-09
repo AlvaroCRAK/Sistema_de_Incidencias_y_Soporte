@@ -11,18 +11,21 @@
     {% tailwind_css %}
 </head>
 <body class="flex bg-gray-100 min-h-screen">
-    <aside class="w-64 bg-blue-800 shadow-md h-screen">
-        <header class="p-4 bg-yellow-500 text-white text-center font-semibold">
-            SOPORTE TÉCNICO FISI
+    <aside class="w-72 bg-[#1e3984] shadow-md h-screen flex flex-col">
+        <header class="p-4 flex flex-col items-center justify-center bg-[#1e3984] mb-4"> <!-- Separación entre el título y los botones -->
+            <img src="{% static 'logo_fisi.png' %}" alt="Logo FISI" class="h-24 mb-2">
+            <span class="text-[#ffc105] font-semibold text-lg text-center">SOPORTE TÉCNICO FISI</span>
         </header>
-        <nav class="mt-4">
-            <ul class="space-y-2">
-                <li><a href="{% url 'soporte:incidencias' %}" class="block px-4 py-2 text-white bg-blue-700 hover:bg-blue-600 transition">INCIDENCIAS</a></li>
-                <li><a href="" class="block px-4 py-2 text-white hover:bg-blue-600 transition">AULAS</a></li>
-                <li><a href="" class="block px-4 py-2 text-white hover:bg-blue-600 transition">PERFIL</a></li>
-                <li><a href="{% url 'soporte:login' %}" class="block px-4 py-2 text-white hover:bg-blue-600 transition">SALIR</a></li>
+        <nav class="flex-1 mt-4"> <!-- Se agregó flex-1 para que ocupe el espacio disponible -->
+            <ul class="space-y-4 text-center"> <!-- Espaciado entre botones y centrado -->
+                <li><a href="{% url 'soporte:incidencias' %}" class="block px-4 py-2 text-white bg-[#1478b0] hover:bg-[#1478b0] transition">INCIDENCIAS</a></li>
+                <li><a href="" class="block px-4 py-2 text-white bg-[#1e3984] hover:bg-[#1478b0] transition">AULAS</a></li>
+                <li><a href="" class="block px-4 py-2 text-white bg-[#1e3984] hover:bg-[#1478b0] transition">PERFIL</a></li>
             </ul>
         </nav>
+        <div class="mt-auto"> <!-- Mantener el botón "SALIR" en la parte inferior -->
+            <a href="{% url 'soporte:login' %}" class="block px-4 py-2 text-white bg-[#1e3984] hover:bg-[#ff3c3c] transition text-center">SALIR</a> <!-- Botón SALIR -->
+        </div>
     </aside>
 
     <main class="flex-1 p-6">
@@ -30,4 +33,3 @@
     </main>
 </body>
 </html>
-
