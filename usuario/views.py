@@ -11,22 +11,24 @@ class LoginView(View):
 
 class ReportarView(View):
     def get(self, request, *args, **kwargs):
-        
         context = {
             "form": IncidenciaForm()
         }
-        
         return render(request, "usuario_reportar.html", context)
     
     def post(self, request, *args, **kwargs):
-        form = IncidenciaForm
+        form = IncidenciaForm(request.POST)
         
         if form.is_valid():
             form.save()
-            
             return redirect("usuario:historial")
         else:
-            self.get()
+            # Imprime los errores en consola para depuración
+            print(form.errors)
+            context = {
+                "form": form  # Pasa el formulario con errores al contexto
+            }
+            return render(request, "usuario_reportar.html", context)
 
 
 class HistorialView(View):

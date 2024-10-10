@@ -8,13 +8,28 @@
 
         <form method="post" class="space-y-6">
             {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="bg-red-100 text-red-600 p-4 rounded">
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ field.label }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700" for="{{ form.id_emisor.id_for_label }}">
-                        {{ form.id_emisor.label }}
+                    <label class="block text-sm font-medium text-gray-700" for="{{ form.nombre_emisor.id_for_label }}">
+                        {{ form.nombre_emisor.label }}
                     </label>
-                    {{ form.id_emisor }}
+                    {{ form.nombre_emisor }}
                 </div>
 
                 <div>
@@ -37,12 +52,14 @@
                     </label>
                     {{ form.id_categoria }}
                 </div>
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700" for="{{ form.id_subcategoria.id_for_label }}">
                         {{ form.id_subcategoria.label }}
                     </label>
                     {{ form.id_subcategoria }}
                 </div>
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700" for="{{ form.id_descripcion.id_for_label }}">
                         {{ form.id_descripcion.label }}

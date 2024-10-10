@@ -20,16 +20,17 @@ class Soporte ( models.Model ):
 class Incidencia ( models.Model ):
     id_incidencia = models.AutoField ( primary_key = True )
     fecha_incidencia = models.DateField ( auto_now_add = True )
-    estado_incidencia = models.CharField ( max_length = 25, default = 'por atender' )
-    id_emisor = models.ForeignKey ( Usuario, related_name = 'incidencias_enviadas',
-                                    on_delete = models.CASCADE )
+    estado_incidencia = models.CharField ( max_length = 25, default = 'Por atender')
+    nombre_emisor = models.CharField( max_length = 50, null = False)
+    #id_emisor = models.ForeignKey ( Usuario, related_name = 'incidencias_enviadas',
+    #                                on_delete = models.CASCADE )
     id_receptor = models.ForeignKey ( Soporte, related_name = 'incidencias_recibidas', 
-                                    on_delete = models.CASCADE)
-    id_salon = models.ForeignKey ( 'Salon', on_delete = models.CASCADE )
-    id_categoria = models.OneToOneField ( 'Categoria', on_delete = models.CASCADE )
-    id_subcategoria = models.OneToOneField ( 'Subcategoria', on_delete = models.CASCADE )
-    id_descripcion = models.OneToOneField ( 'Descripcion', on_delete = models.CASCADE )
-    detalles_categoria = models.TextField ()
+                                    on_delete = models.CASCADE, null = False)
+    id_salon = models.ForeignKey ( 'Salon', on_delete = models.CASCADE, null = False)
+    id_categoria = models.OneToOneField ( 'Categoria', on_delete = models.CASCADE, null= True)
+    id_subcategoria = models.OneToOneField ( 'Subcategoria', on_delete = models.CASCADE, null = True)
+    id_descripcion = models.OneToOneField ( 'Descripcion', on_delete = models.CASCADE, null = True)
+    detalles_categoria = models.TextField ( null = True )
 
     def __str__ ( self ):
         return f"Incidencia {self.id_incidencia} - {self.estado_incidencia}"
@@ -42,7 +43,7 @@ class Salon ( models.Model ):
     pabellon_salon = models.CharField ( max_length = 25, null = False )
 
     def __str__ ( self ):
-        return f"{self.tipo_salon} - {self.codigo_salon}"
+        return f"{self.tipo_salon} - {self.pabellon_salon}- {self.codigo_salon}"
 
 
 class Categoria ( models.Model ):

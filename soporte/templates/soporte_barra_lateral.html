@@ -11,19 +11,30 @@
     {% tailwind_css %}
 </head>
 <body class="flex bg-gray-100 min-h-screen">
-    <aside class="w-72 bg-[#1e3984] shadow-md h-screen flex flex-col">
-        <header class="p-4 flex flex-col items-center justify-center bg-[#1e3984] mb-4"> <!-- Separación entre el título y los botones -->
+    <aside class="w-72 bg-[#1e3984] shadow-md h-screen flex flex-col justify-between">
+        <header class="p-4 flex flex-col items-center justify-center bg-[#1e3984] mb-4"> 
             <img src="{% static 'logo_fisi.png' %}" alt="Logo FISI" class="h-24 mb-2">
             <span class="text-[#ffc105] font-semibold text-lg text-center">SOPORTE TÉCNICO FISI</span>
         </header>
-        <nav class="flex-1 mt-4"> <!-- Se agregó flex-1 para que ocupe el espacio disponible -->
-            <ul class="space-y-4 text-center"> <!-- Espaciado entre botones y centrado -->
-                <li><a href="{% url 'soporte:incidencias' %}" class="block px-4 py-2 text-white bg-[#1478b0] hover:bg-[#1478b0] transition">INCIDENCIAS</a></li>
-                <li><a href="" class="block px-4 py-2 text-white bg-[#1e3984] hover:bg-[#1478b0] transition">AULAS</a></li>
-                <li><a href="" class="block px-4 py-2 text-white bg-[#1e3984] hover:bg-[#1478b0] transition">PERFIL</a></li>
+        <nav class="flex-1 mt-4">
+            <ul class="space-y-0 text-center">
+                <li>
+                    <a href="{% url 'soporte:incidencias' %}" class="block px-6 py-5 text-white hover:bg-[#1198d2] {% if request.path == '/soporte/incidencias/' %}bg-[#1198d2]{% endif %} transition">INCIDENCIAS</a>
+                </li>
+                <li>
+                    <a href="" class="block px-6 py-5 text-white hover:bg-[#1198d2] {% if request.path == '/soporte/aulas/' %}bg-[#1198d2]{% endif %} transition">AULAS</a>
+                </li>
+                <li>
+                    <a href="" class="block px-6 py-5 text-white hover:bg-[#1198d2] {% if request.path == '/soporte/perfil/' %}bg-[#1198d2]{% endif %} transition">PERFIL</a>
+                </li>
             </ul>
         </nav>
-        <a href="{% url 'soporte:login' %}" class="block px-4 py-2 text-white bg-[#1e3984] hover:bg-[#ff3c3c] transition text-center">SALIR</a>
+        <div class="p-4">
+            <a href="{% url 'soporte:login' %}" class="block px-6 py-4 text-white bg-[#1e3984] hover:bg-[#ff3c3c] transition text-center rounded-full">SALIR</a>
+            <footer class="mt-6 text-center text-sm text-gray-300">
+                <p>© 2024 No Compila</p>
+            </footer>
+        </div>
     </aside>
 
     <main class="flex-1 p-6">
