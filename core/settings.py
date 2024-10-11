@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'django_browser_reload',
+
+    'rest_framework',
 ]
 
 TAILWIND_APP_NAME = 'theme'
@@ -68,7 +70,7 @@ MIDDLEWARE = [
 ]
 
 # tienen que poner su path de npm
-NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+# NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 ROOT_URLCONF = 'core.urls'
 
