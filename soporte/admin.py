@@ -1,29 +1,53 @@
 from django.contrib import admin
-from .models import Usuario, Soporte, Incidencia, Salon, Categoria, Subcategoria, Descripcion
+from .models import UsuarioEmisor, Usuario, Soporte, DescripcionDelEstado, DispositivoAfectado, TipoDeIncidencia, Salon, Incidencia
+
+@admin.register(UsuarioEmisor)
+class UsuarioEmisorAdmin(admin.ModelAdmin):
+    list_display = ('nombre',)
+    search_fields = ('nombre',)
 
 @admin.register(Usuario)
 class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ('id_usuario', 'nombre_usuario')
-    search_fields = ('nombre_usuario',)
-
+    list_display = ('username', 'email', 'fecha_registro')
+    search_fields = ('username', 'email')
 
 @admin.register(Soporte)
 class SoporteAdmin(admin.ModelAdmin):
-    list_display = ('id_soporte', 'nombre_soporte')
-    search_fields = ('nombre_soporte',)
+    list_display = ('usuario', 'especialidad')
+    search_fields = ('usuario__username',)
 
+@admin.register(DescripcionDelEstado)
+class DescripcionDelEstadoAdmin(admin.ModelAdmin):
+    list_display = ('descripcion',)
+    search_fields = ('descripcion',)
+
+@admin.register(DispositivoAfectado)
+class DispositivoAfectadoAdmin(admin.ModelAdmin):
+    list_display = ('dispositivo',)
+    search_fields = ('dispositivo',)
+
+@admin.register(TipoDeIncidencia)
+class TipoDeIncidenciaAdmin(admin.ModelAdmin):
+    list_display = ('tipo',)
+    search_fields = ('tipo',)
+
+@admin.register(Salon)
+class SalonAdmin(admin.ModelAdmin):
+    list_display = ('tipo_salon', 'codigo_salon', 'pabellon_salon')
+    search_fields = ('tipo_salon', 'codigo_salon', 'pabellon_salon')
 
 @admin.register(Incidencia)
 class IncidenciaAdmin(admin.ModelAdmin):
-    list_display = ('id_incidencia', 'fecha_incidencia', 'estado_incidencia', 'nombre_emisor', 'id_receptor')
-    list_filter = ('estado_incidencia', 'fecha_incidencia')
-    search_fields = ('nombre_emisor', 'estado_incidencia')
+    list_display = ('id_incidencia', 'fecha_incidencia', 'estado_incidencia', 'id_emisor', 'id_receptor', 'id_salon', 'id_categoria')
+    list_filter = ('estado_incidencia', 'fecha_incidencia', 'id_receptor', 'id_categoria')
+    search_fields = ('detalles_categoria',)
+    raw_id_fields = ('id_emisor', 'id_receptor', 'id_salon', 'id_categoria')
 
 
 @admin.register(Salon)
 class SalonAdmin(admin.ModelAdmin):
     list_display = ('id_salon', 'tipo_salon', 'codigo_salon', 'pabellon_salon')
-    search_fields = ('tipo_salon', 'pabellon_salon')
+    search_fields = ('tipo_salon', 'codigo_salon')
 
 
 @admin.register(Categoria)

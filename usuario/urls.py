@@ -5,7 +5,7 @@ app_name = "usuario"
 
 urlpatterns = [
     path("", LoginView.as_view(), name="login"),
-    path("reportar/", ReportarView.as_view(), name="reportar"),
+    path("reportar/", ReportarIncidenciasView.as_view(), name="reportar"),
     path("historial/", HistorialView.as_view(), name="historial"),
     path("preguntas/", PreguntasView.as_view(), name="preguntas"),
 ]
