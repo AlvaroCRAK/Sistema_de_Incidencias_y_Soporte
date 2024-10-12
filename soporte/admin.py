@@ -1,43 +1,42 @@
 from django.contrib import admin
-from .models import UsuarioEmisor, Usuario, Soporte, DescripcionDelEstado, DispositivoAfectado, TipoDeIncidencia, Salon, Incidencia
+from .models import  Usuario, Soporte, DescripcionDelEstado, DispositivoAfectado, TipoDeIncidencia, Salon, Incidencia
 
 @admin.register(Usuario)
 class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'fecha_registro')
-    search_fields = ('username', 'email')
-
-@admin.register(UsuarioEmisor)
-class UsuarioEmisorAdmin(admin.ModelAdmin):
-    list_display = ('nombre',)
-    search_fields = ('nombre',)
+    list_display = ['id', 'username', 'email', 'fecha_registro']
+    search_fields = ['username', 'email']
 
 @admin.register(Soporte)
 class SoporteAdmin(admin.ModelAdmin):
-    list_display = ('usuario', 'especialidad')
-    search_fields = ('usuario__username', 'especialidad')
+    list_display = ['id', 'usuario', 'especialidad']
+    search_fields = ['usuario__username', 'especialidad']
 
 @admin.register(DescripcionDelEstado)
 class DescripcionDelEstadoAdmin(admin.ModelAdmin):
-    list_display = ('descripcion',)
-    search_fields = ('descripcion',)
+    list_display = ['id', 'descripcion']
+    search_fields = ['descripcion']
 
 @admin.register(DispositivoAfectado)
 class DispositivoAfectadoAdmin(admin.ModelAdmin):
-    list_display = ('dispositivo',)
-    search_fields = ('dispositivo',)
+    list_display = ['id', 'dispositivo']
+    search_fields = ['dispositivo']
 
 @admin.register(TipoDeIncidencia)
 class TipoDeIncidenciaAdmin(admin.ModelAdmin):
-    list_display = ('tipo',)
-    search_fields = ('tipo',)
+    list_display = ['id', 'tipo']
+    search_fields = ['tipo']
 
 @admin.register(Salon)
 class SalonAdmin(admin.ModelAdmin):
-    list_display = ('tipo_salon', 'codigo_salon', 'pabellon_salon')
-    search_fields = ('tipo_salon', 'codigo_salon')
+    list_display = ['id', 'salon']
+    search_fields = ['salon']
 
 @admin.register(Incidencia)
 class IncidenciaAdmin(admin.ModelAdmin):
-    list_display = ('emisor', 'receptor', 'tipo_incidencia', 'dispositivo_afectado', 'descripcion_estado', 'salon', 'fecha')
-    search_fields = ('emisor__nombre', 'receptor__usuario__username', 'tipo_incidencia__tipo', 'dispositivo_afectado__dispositivo')
-    list_filter = ('tipo_incidencia', 'fecha')
+    list_display = [
+        'id', 'emisor', 'tipo_incidencia', 'dispositivo_afectado', 
+        'descripcion_estado', 'salon', 'fecha'
+    ]
+    list_filter = ['fecha', 'tipo_incidencia', 'salon']
+    search_fields = ['emisor__nombre', 'tipo_incidencia__tipo', 'dispositivo_afectado__dispositivo']
+

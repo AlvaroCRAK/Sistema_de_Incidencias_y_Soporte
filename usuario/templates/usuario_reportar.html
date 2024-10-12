@@ -43,20 +43,6 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700" for="{{ form.receptor.id_for_label }}">
-                        {{ form.receptor.label }}
-                    </label>
-                    {{ form.receptor }}
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700" for="{{ form.salon.id_for_label }}">
-                        {{ form.salon.label }}
-                    </label>
-                    {{ form.salon }}
-                </div>
-
-                <div>
                     <label class="block text-sm font-medium text-gray-700" for="{{ form.tipo_incidencia.id_for_label }}">
                         {{ form.tipo_incidencia.label }}
                     </label>
@@ -75,6 +61,13 @@
                         {{ form.descripcion_estado.label }}
                     </label>
                     {{ form.descripcion_estado }}
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700" for="{{ form.salon.id_for_label }}">
+                        {{ form.salon.label }}
+                    </label>
+                    {{ form.salon }}
                 </div>
             </div>
 
@@ -96,3 +89,4 @@
         </form>
     </div>
 {% endblock content %}
+
