@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
 class UsuarioEmisor ( models.Model ):
@@ -9,6 +9,20 @@ class UsuarioEmisor ( models.Model ):
 class Usuario ( AbstractUser ):
     email = models.EmailField ( unique = True )
     fecha_registro = models.DateTimeField ( auto_now_add = True )
+    
+    groups = models.ManyToManyField(
+        Group,
+        related_name='usuario_groups',
+        blank=True,
+        help_text='The groups this user belongs to.'
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='usuario_permissions',
+        blank=True,
+        help_text='Specific permissions for this user.'
+    )
+    
     def __str__ ( self ):
         return self.username
 
@@ -43,7 +57,8 @@ class Salon ( models.Model ):
         return f"{self.tipo_salon} - {self.codigo_salon}"
 
 class Incidencia ( models.Model ):
-    emisor = models.ForeignKey ( UsuarioEmisor, related_name = "incidencias_enviadas", on_delete = models.CASCADE )
+    emisor = models.CharField( max_length = 100, null = False)
+    #emisor = models.ForeignKey ( UsuarioEmisor, related_name = "incidencias_enviadas", on_delete = models.CASCADE )
     receptor = models.ForeignKey ( Soporte, related_name = "incidencias_recibidas", on_delete = models.CASCADE )
     
     tipo_incidencia = models.ForeignKey ( TipoDeIncidencia, on_delete = models.CASCADE )
@@ -52,5 +67,7 @@ class Incidencia ( models.Model ):
     salon = models.ForeignKey ( Salon, on_delete = models.CASCADE )
     
     fecha = models.DateField ( auto_now_add = True )
+    comentarios = models.TextField(blank=True, null=True)
+    
     def __str__ ( self ):
         return f'Incidencia #{self.id} - {self.tipo_incidencia.tipo}'

@@ -1,8 +1,11 @@
+import requests
+
 from django.shortcuts import render, redirect
 from django.views import View
 from django.core.cache import cache
 from django.http import JsonResponse
-import requests
+from django.contrib import messages
+
 from soporte.models import UsuarioEmisor
 from soporte.serializers import IncidenciaSerializer
 from .forms import IncidenciaForm
@@ -41,40 +44,47 @@ class PreguntasView(View):
     def get(self, request, *args, **kwargs):
         return render(request, "usuario_preguntas.html")
 
+
 class ReportarIncidenciasView(View):
     def get(self, request, *args, **kwargs):
         context = {
             "form": IncidenciaForm()
         }
         return render(request, "usuario_reportar.html", context)
-    def post ( self, request, *args, **kwargs ):
-        form = IncidenciaForm ( request.POST )
-        if form.is_valid ():
-            emisor_nombre = form.cleaned_data['emisor_nombre']
-            usuario_emisor, created = UsuarioEmisor.objects.get_or_create ( nombre = emisor_nombre )
+    
+    def post(self, request, *args, **kwargs):
+        form = IncidenciaForm(request.POST)
+        
+        if form.is_valid():
+            emisor_nombre = form.cleaned_data['emisor']
+            usuario_emisor, created = UsuarioEmisor.objects.get_or_create(nombre=emisor_nombre)
 
             incidencia_data = {
                 'emisor': usuario_emisor.id,
-                'receptor': form.cleaned_data['receptor_id'],
-                'tipo_incidencia': form.cleaned_data['tipo_incidencia'],
-                'dispositivo_afectado': form.cleaned_data['dispositivo_afectado'],
-                'descripcion_estado': form.cleaned_data['descripcion_estado'],
-                'salon': form.cleaned_data['salon'],
+                'receptor': form.cleaned_data['receptor'].id,
+                'tipo_incidencia': form.cleaned_data['tipo_incidencia'].id,
+                'dispositivo_afectado': form.cleaned_data['dispositivo_afectado'].id,
+                'descripcion_estado': form.cleaned_data['descripcion_estado'].id,
+                'salon': form.cleaned_data['salon'].id_salon,
             }
+
             cache_key = f'incidencia_{usuario_emisor.id}'
-            cache_data = cache.get ( cache_key, [] )
-            cache_data.append ( incidencia_data )
-            cache.set ( cache_key, cache_data, timeout = None )
+            cache_data = cache.get(cache_key, [])
+            cache_data.append(incidencia_data)
+            cache.set(cache_key, cache_data, timeout=None)
 
             api_url = 'http://localhost:8000/api/incidencias/'
-            serializer = IncidenciaSerializer ( data = incidencia_data )
+            serializer = IncidenciaSerializer(data=incidencia_data)
 
-            if serializer.is_valid ():
-                response = requests.post ( api_url, json = serializer.data )
+            if serializer.is_valid():
+                response = requests.post(api_url, json=serializer.data)
                 if response.status_code == 201:
-                    return JsonResponse({'message': 'Incidencia reportada correctamente. '}, status = 201 )
+                    messages.success(request, 'Incidencia registrada correctamente!')
+                    return JsonResponse({'message': 'Incidencia reportada correctamente.'}, status=201)
                 else:
-                    return JsonResponse({'message': 'Error al reportar la incidencia en la API. '}, status = response.status_code )
+                    return JsonResponse({'message': 'Error al reportar la incidencia en la API.'}, status=response.status_code)
             else: 
-                return JsonResponse({'message': 'Error en los datos de la incidencia. '}, status = 400 )
-        return render ( request, "usuario_reportar.html", {'form': form})
+                return JsonResponse({'message': 'Error en los datos de la incidencia.', 'errors': serializer.errors}, status=400)
+        
+        return JsonResponse({'message': 'Errores en el formulario.', 'errors': form.errors}, status=400)
+

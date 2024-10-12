@@ -11,7 +11,7 @@
     {% tailwind_css %}
 </head>
 <body class="flex bg-gray-100 min-h-screen">
-    <aside class="w-72 bg-[#1e3984] shadow-md h-screen flex flex-col justify-between">
+    <aside class="fixed w-72 bg-[#1e3984] shadow-md h-full flex flex-col justify-between">
         <div>
             <header class="p-4 flex flex-col items-center justify-center bg-[#1e3984] mb-4">
                 <img src="{% static 'logo_fisi.png' %}" alt="Logo FISI" class="h-24 mb-2">
@@ -39,7 +39,7 @@
         </div>
     </aside>
 
-    <main class="flex-1 p-6">
+    <main class="flex-1 ml-72 p-6"> <!-- Añadido ml-72 para ajustar el margen -->
         {% block content %}{% endblock content %}
     </main>
 </body>

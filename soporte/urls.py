@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LoginView, IncidenciasView
+from .views import LoginView, IncidenciasView, IncidenciaListCreateView
 
 app_name = "soporte"
 

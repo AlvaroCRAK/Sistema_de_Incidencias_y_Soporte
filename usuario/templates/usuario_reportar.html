@@ -1,10 +1,20 @@
 {% extends "usuario_barra_lateral.html" %}
 
-{% block title %}Reportar incidencia{% endblock title %}
+{% block title %}Reportar Incidencia{% endblock title %}
 
 {% block content %}
     <div class="max-w-4xl mx-auto p-8 bg-white shadow-md rounded-lg">
-        <h2 class="text-2xl font-semibold mb-6 text-gray-800">Incidencia [2024-09-30]</h2>
+        <h2 class="text-2xl font-semibold mb-6 text-gray-800">Reportar Incidencia</h2>
+
+        {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="bg-green-100 text-green-700 p-4 rounded">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
         <form method="post" class="space-y-6">
             {% csrf_token %}
@@ -26,59 +36,56 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700" for="{{ form.nombre_emisor.id_for_label }}">
-                        {{ form.nombre_emisor.label }}
+                    <label class="block text-sm font-medium text-gray-700" for="{{ form.emisor.id_for_label }}">
+                        {{ form.emisor.label }}
                     </label>
-                    {{ form.nombre_emisor }}
+                    {{ form.emisor }}
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700" for="{{ form.id_receptor.id_for_label }}">
-                        {{ form.id_receptor.label }}
+                    <label class="block text-sm font-medium text-gray-700" for="{{ form.receptor.id_for_label }}">
+                        {{ form.receptor.label }}
                     </label>
-                    {{ form.id_receptor }}
+                    {{ form.receptor }}
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700" for="{{ form.id_salon.id_for_label }}">
-                        {{ form.id_salon.label }}
+                    <label class="block text-sm font-medium text-gray-700" for="{{ form.salon.id_for_label }}">
+                        {{ form.salon.label }}
                     </label>
-                    {{ form.id_salon }}
+                    {{ form.salon }}
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700" for="{{ form.id_categoria.id_for_label }}">
-                        {{ form.id_categoria.label }}
+                    <label class="block text-sm font-medium text-gray-700" for="{{ form.tipo_incidencia.id_for_label }}">
+                        {{ form.tipo_incidencia.label }}
                     </label>
-                    {{ form.id_categoria }}
+                    {{ form.tipo_incidencia }}
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700" for="{{ form.id_subcategoria.id_for_label }}">
-                        {{ form.id_subcategoria.label }}
+                    <label class="block text-sm font-medium text-gray-700" for="{{ form.dispositivo_afectado.id_for_label }}">
+                        {{ form.dispositivo_afectado.label }}
                     </label>
-                    {{ form.id_subcategoria }}
+                    {{ form.dispositivo_afectado }}
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700" for="{{ form.id_descripcion.id_for_label }}">
-                        {{ form.id_descripcion.label }}
+                    <label class="block text-sm font-medium text-gray-700" for="{{ form.descripcion_estado.id_for_label }}">
+                        {{ form.descripcion_estado.label }}
                     </label>
-                    {{ form.id_descripcion }}
+                    {{ form.descripcion_estado }}
                 </div>
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-700" for="{{ form.detalles_categoria.id_for_label }}">
-                    {{ form.detalles_categoria.label }}
+                <label class="block text-sm font-medium text-gray-700" for="{{ form.comentarios.id_for_label }}">
+                    {{ form.comentarios.label }}
                 </label>
-                {{ form.detalles_categoria }}
+                {{ form.comentarios }}
             </div>
 
             <div class="flex justify-end space-x-4">
-                <button type="button" class="py-2 px-4 bg-gray-100 text-gray-700 font-semibold rounded-md shadow hover:bg-gray-200">
-                    Añadir
-                </button>
                 <button type="submit" class="py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700">
                     Enviar
                 </button>

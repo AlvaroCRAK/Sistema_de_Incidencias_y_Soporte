@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import LoginView, ReportarView, HistorialView, PreguntasView
+from .views import LoginView, ReportarIncidenciasView, HistorialView, PreguntasView
 
 app_name = "usuario"
 
