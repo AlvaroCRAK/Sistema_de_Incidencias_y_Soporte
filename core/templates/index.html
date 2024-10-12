@@ -4,21 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de incidencias y soporte</title>
-
+    <title>Sistema de Incidencias y Soporte</title>
+    
     {% tailwind_css %}
-
+    <style>
+        body {
+            background-image: url('{% static "fondo_fisi.jpeg" %}'); /* Asegúrate de que la ruta sea correcta */
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
 </head>
-<body>
+<body class="relative flex items-center justify-center min-h-screen">
+    <!-- Overlay oscuro para oscurecer la imagen de fondo -->
+    <div class="absolute inset-0 bg-black opacity-40"></div>
 
-    <a href="{% url 'usuario:login' %}">
-        <button>Usuario</button>
-    </a>
+    <div class="relative bg-white rounded-lg shadow-xl p-10 max-w-md w-full bg-opacity-90">
+        <h1 class="text-2xl font-semibold text-center mb-8 text-[#1e3984]">BIENVENIDO AL SISTEMA DE INCIDENCIAS Y SOPORTE</h1>
+        
+        <div class="flex flex-col space-y-8">
+            <a href="{% url 'usuario:login' %}">
+                <button class="bg-[#1198d2] text-white font-bold py-4 rounded-lg hover:bg-[#1478b0] transition duration-200 w-full text-xl shadow-md">Usuario</button>
+            </a>
 
-    <br><br><br>
-
-    <a href="{% url 'soporte:login' %}">
-        <button>Soporte</button>
-    </a>
+            <a href="{% url 'soporte:login' %}">
+                <button class="bg-green-600 text-white font-bold py-4 rounded-lg hover:bg-green-700 transition duration-200 w-full text-xl shadow-md">Soporte</button>
+            </a>
+        </div>
+    </div>
 </body>
 </html>

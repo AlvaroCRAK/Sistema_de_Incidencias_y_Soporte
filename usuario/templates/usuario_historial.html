@@ -3,18 +3,30 @@
 {% block title %}Historial incidencias{% endblock title %}
 
 {% block content %}
-
-    <h2>MIS INCIDENCIAS</h2>
-
-    <div>
-        <button>PDF</button>
-        <p>Incidencia [12:30:20]</p>
-        <p>Aula</p>
-        <p>Categoria</p>
-        <p>Descripcion</p>
-
-        <p>Por antender</p>
-        <button>&plus;</button>
+    <div class="container mx-auto mt-5">
+        <h2 class="text-2xl font-bold mb-4">MIS INCIDENCIAS</h2>
+        
+        <div class="flex flex-col space-y-4">
+            {% for incidencia in incidencias %}
+            <div class="bg-white shadow-md rounded-lg p-4 w-full flex">
+                <div class="flex-1">
+                    <h3 class="text-lg font-semibold mb-2 text-gray-800">Incidencia [{{ incidencia.fecha }}]</h3>
+                    <p class="text-gray-600"><strong>Usuario Emisor:</strong> {{ incidencia.emisor }}</p>
+                    <p class="text-gray-600"><strong>Tipo de Incidencia:</strong> {{ incidencia.tipo_incidencia }}</p>
+                    <p class="text-gray-600"><strong>Dispositivo Afectado:</strong> {{ incidencia.dispositivo_afectado }}</p>
+                    <p class="text-gray-600"><strong>Salón:</strong> {{ incidencia.salon }}</p>
+                    <p class="text-gray-600"><strong>Descripción:</strong> {{ incidencia.descripcion_estado }}</p>
+                </div>  
+                <div class="flex flex-col items-center justify-between ml-4">
+                    <span class="bg-red-500 text-white rounded-full px-4 py-2 mb-2 text-lg">
+                        {{ incidencia.estado_incidencia }}
+                    </span>
+                    <a href="#" class="font-bold text-red-500 hover:text-red-600 transition duration-300">+</a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-gray-600">No hay incidencias registradas.</p>
+            {% endfor %}
+        </div>
     </div>
-
 {% endblock content %}

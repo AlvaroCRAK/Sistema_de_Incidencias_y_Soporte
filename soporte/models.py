@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class Usuario(AbstractUser):
@@ -36,6 +36,7 @@ class Salon ( models.Model ):
 class Incidencia ( models.Model ):
     emisor = models.CharField ( max_length = 100, null = False )
     
+    estado_incidencia = models.CharField( max_length = 25, default = "Por atender")
     tipo_incidencia = models.ForeignKey ( TipoDeIncidencia, on_delete = models.CASCADE )
     dispositivo_afectado = models.ForeignKey ( DispositivoAfectado, on_delete = models.CASCADE )
     descripcion_estado = models.ForeignKey ( DescripcionDelEstado, on_delete = models.CASCADE )
