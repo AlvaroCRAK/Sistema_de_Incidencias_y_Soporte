@@ -1,13 +1,14 @@
 import requests
+from datetime import datetime
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render #, redirect
 from django.views import View
 from django.core.cache import cache
 from django.http import JsonResponse
 from django.contrib import messages
 
 from soporte.models import DescripcionDelEstado, DispositivoAfectado, Salon, TipoDeIncidencia
-from soporte.serializers import IncidenciaSerializer
+#from soporte.serializers import IncidenciaSerializer
 from .forms import IncidenciaForm
 
 # Create your views here.
@@ -63,7 +64,8 @@ class ReportarIncidenciasView(View):
                 "dispositivo_afectado": request.POST.get('dispositivo_afectado'),  # Debe estar en el formulario
                 "descripcion_estado": request.POST.get('descripcion_estado'),  # Debe estar en el formulario
                 "comentarios": form.cleaned_data['comentarios'],
-                "estado_incidencia" : "Por atender"
+                "estado_incidencia" : "Por atender",
+                "fecha_registro": datetime.now().strftime("%b. %d, %Y, %I:%M %p").lstrip("0").replace("AM", "a.m.").replace("PM", "p.m.")
             }
 
             # Enviar la incidencia a la API

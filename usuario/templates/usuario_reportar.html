@@ -3,8 +3,8 @@
 {% block title %}Reportar Incidencia{% endblock title %}
 
 {% block content %}
-    <div class="max-w-4xl mx-auto p-8 bg-white shadow-md rounded-lg">
-        <h2 class="text-2xl font-semibold mb-6 text-gray-800">Reportar Incidencia</h2>
+    <div class="max-w-4xl mx-auto p-8 bg-white shadow-md rounded-lg mt-4">
+        <h2 class="text-2xl font-bold mb-4">REPORTAR INCIDENCIAS</h2>
 
         {% if messages %}
             <div class="mb-4">
@@ -42,11 +42,14 @@
                     {{ form.emisor }}
                 </div>
 
-                <div>
+                <div class="relative">
                     <label class="block text-sm font-medium text-gray-700" for="{{ form.tipo_incidencia.id_for_label }}">
                         {{ form.tipo_incidencia.label }}
                     </label>
                     {{ form.tipo_incidencia }}
+                    <button type="button" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-yellow-500 text-white py-2 px-4 font-semibold rounded-md shadow hover:bg-yellow-600" onclick="toggleModal()">
+                        Ayuda
+                    </button>
                 </div>
 
                 <div>
@@ -79,7 +82,7 @@
             </div>
 
             <div class="flex justify-end space-x-4">
-                <button type="submit" class="py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700">
+                <button type="submit" class="py-2 px-4 bg-green-600 text-white font-semibold rounded-md shadow hover:bg-green-700">
                     Enviar
                 </button>
                 <button type="reset" class="py-2 px-4 bg-red-600 text-white font-semibold rounded-md shadow hover:bg-red-700">
@@ -88,5 +91,25 @@
             </div>
         </form>
     </div>
-{% endblock content %}
 
+    <!-- Modal -->
+    <div id="helpModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
+        <div class="bg-white rounded-lg p-6 max-w-lg mx-auto transform translate-y-1/2">
+            <h3 class="text-lg font-bold mb-4">Detalles de Tipos de Incidencias</h3>
+            <ul class="list-disc pl-5">
+                <li><strong>Hardware:</strong> Problemas relacionados con dispositivos físicos, como computadoras, impresoras, etc.</li>
+                <li><strong>Software:</strong> Problemas con aplicaciones, sistemas operativos y programas.</li>
+                <li><strong>Limpieza:</strong> Incidencias que involucran la limpieza y mantenimiento de las instalaciones.</li>
+                <!-- Agrega más tipos según sea necesario -->
+            </ul>
+            <button class="mt-4 px-4 py-2 bg-red-600 text-white font-semibold rounded-md shadow hover:bg-red-700" onclick="toggleModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleModal() {
+            const modal = document.getElementById('helpModal');
+            modal.classList.toggle('hidden');
+        }
+    </script>
+{% endblock content %}
