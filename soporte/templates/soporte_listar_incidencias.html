@@ -1,0 +1,92 @@
+{% extends "soporte_barra_lateral.html" %}
+
+{% block title %}Historial de Incidencias{% endblock title %}
+
+{% block content %}
+    <div class="container mx-auto mt-5">
+        <h2 class="text-2xl font-bold mb-4">Todas las Incidencias</h2>
+        
+        <!-- Div que contiene la cantidad de incidencias -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-[#1198d2] text-white rounded-lg shadow p-4 text-center">
+                <p class="text-sm">Cantidad de incidencias reportadas</p>
+                <h2 class="text-3xl font-bold">{{ total_incidencias }}</h2>
+            </div>
+
+            <div class="bg-[#15bf40] text-white rounded-lg shadow p-4 text-center">
+                <p class="text-sm">Incidencias atendidas</p>
+                <h2 class="text-3xl font-bold">{{ incidencias_atendidas }}</h2>
+            </div>
+
+            <div class="bg-[#ffc105] text-white rounded-lg shadow p-4 text-center">
+                <p class="text-sm">Incidencias en atención</p>
+                <h2 class="text-3xl font-bold">{{ incidencias_en_atencion }}</h2>
+            </div>
+
+            <div class="bg-[#ff3c3c] text-white rounded-lg shadow p-4 text-center">
+                <p class="text-sm">Incidencias por atender</p>
+                <h2 class="text-3xl font-bold">{{ incidencias_pendientes }}</h2>
+            </div>
+        </div>
+
+        <div class="flex flex-col space-y-4">
+            {% for incidencia in incidencias %}
+            <div class="bg-white shadow-md rounded-lg p-4 w-full flex">
+                <div class="flex-1">
+                    <h3 class="text-lg font-semibold mb-2 text-gray-800">Incidencia [{{ incidencia.fecha }}]</h3>
+                    <p class="text-gray-600"><strong>Usuario Emisor:</strong> {{ incidencia.emisor }}</p>
+                    <p class="text-gray-600"><strong>Tipo de Incidencia:</strong> {{ incidencia.tipo_incidencia }}</p>
+                    <p class="text-gray-600"><strong>Dispositivo Afectado:</strong> {{ incidencia.dispositivo_afectado }}</p>
+                    <p class="text-gray-600"><strong>Salón:</strong> {{ incidencia.salon }}</p>
+                    <p class="text-gray-600"><strong>Descripción:</strong> {{ incidencia.descripcion_estado }}</p>
+                </div>  
+                <div class="flex flex-col items-center justify-between ml-4">
+                    <span class="bg-red-500 text-white rounded-full px-4 py-2 mb-2 text-lg">
+                        {{ incidencia.estado_incidencia }}
+                    </span>
+                    <a href="javascript:void(0);" onclick="mostrarDetalles({{ incidencia.id }})" class="font-bold text-red-500 hover:text-red-600 transition duration-300">Ver Detalles</a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-gray-600">No hay incidencias registradas.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Contenedor para mostrar los detalles de la incidencia -->
+        <div id="detalle-incidencia" style="display: none;"></div>
+
+    </div>
+
+    <!-- Script para manejar los detalles -->
+    <script>
+        function mostrarDetalles(incidenciaId) {
+            const newTab = window.open('', '_blank'); // Abre una nueva pestaña
+            fetch(`/soporte/incidencias/${incidenciaId}/`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la respuesta de la red');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    newTab.document.title = `Detalles de Incidencia ${incidenciaId}`; // Titulo de la nueva pestaña
+                    newTab.document.body.innerHTML = `
+                        <div class="container mx-auto mt-5">
+                            <h3 class="text-2xl font-bold mb-4">Incidencia ${data.hora}</h3>
+                            <p><strong>Emisor:</strong> ${data.emisor}</p>
+                            <p><strong>Aula:</strong> ${data.aula}</p>
+                            <p><strong>Categoría:</strong> ${data.categoria}</p>
+                            <p><strong>Descripción:</strong> ${data.descripcion}</p>
+                            <p><strong>Asignado:</strong> ${data.asignado}</p>
+                            <button onclick="window.close()">Cerrar</button>
+                        </div>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    newTab.document.body.innerHTML = '<p>Error al cargar los detalles.</p>';
+                });
+        }
+    </script>
+{% endblock content %}
+
