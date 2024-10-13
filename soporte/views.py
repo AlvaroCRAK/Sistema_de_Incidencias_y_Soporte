@@ -84,7 +84,27 @@ class LoginView(View):
 @method_decorator(login_required, name='dispatch')
 class IncidenciasView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, "soporte_incidencias.html")
+        incidencias = Incidencia.objects.all()  # Traer todas las incidencias
+        return render(request, "soporte_incidencias.html", {'incidencias': incidencias})
+
+    def post(self, request, *args, **kwargs):
+        incidencia_id = request.POST.get('incidencia_id')
+        accion = request.POST.get('accion')
+
+        # Busca la incidencia correspondiente
+        incidencia = Incidencia.objects.get(id=incidencia_id)
+
+        # Cambia el estado de la incidencia basado en la acción
+        if accion == 'atender':
+            incidencia.estado_incidencia = 'Atendida'
+        elif accion == 'archivar':
+            incidencia.estado_incidencia = 'Archivada'
+
+        # Guarda la incidencia actualizada
+        incidencia.save()
+
+        # Redirigir a la vista de incidencias después de actualizar
+        return redirect('soporte:incidencias')
 
 class IncidenciaCreateView ( generics.CreateAPIView ):
     queryset = Incidencia.objects.all ()
