@@ -1,13 +1,18 @@
 from rest_framework import generics
 from .models import Incidencia 
 from .serializers import IncidenciaSerializer 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from rest_framework.permissions import AllowAny
 from django.views.generic import ListView
 from .models import Incidencia
 from django.views.generic import DetailView 
 from django.http import JsonResponse
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from .forms import SoporteLoginForm
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 # Create your views here.
 
@@ -54,9 +59,29 @@ class IncidenciaDetailView(DetailView):
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, "soporte_login.html")
-    
+        if request.user.is_authenticated:
+            return redirect('soporte:incidencias')  # Redirige si ya está autenticado
+        form = SoporteLoginForm()
+        return render(request, "soporte_login.html", {'form': form})
 
+    def post(self, request, *args, **kwargs):
+        form = SoporteLoginForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f"Bienvenido {username}")
+                return redirect('soporte:incidencias')  # Redirige tras el login
+            else:
+                messages.error(request, "Credenciales incorrectas. Inténtalo de nuevo.")
+        else:
+            messages.error(request, "Por favor, verifica los campos.")
+        return render(request, "soporte_login.html", {'form': form})
+
+
+@method_decorator(login_required, name='dispatch')
 class IncidenciasView(View):
     def get(self, request, *args, **kwargs):
         return render(request, "soporte_incidencias.html")

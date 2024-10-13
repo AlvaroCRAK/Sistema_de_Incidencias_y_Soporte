@@ -22,7 +22,19 @@
     <div class="relative bg-white rounded-lg shadow-xl p-8 max-w-md w-full bg-opacity-95">
         <h2 class="text-2xl font-semibold text-center mb-6 text-[#1e3984]">INICIO DE SESIÓN</h2>
         
-        <form action="{% url 'soporte:incidencias' %}">
+        <!-- Mostrar mensajes de error si existen -->
+        {% if messages %}
+            <div class="mb-4 text-red-600">
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        
+        <!-- Formulario de inicio de sesión -->
+        <form method="POST" action="{% url 'soporte:login' %}">
             {% csrf_token %}
             <div class="mb-4">
                 <label for="username" class="block font-medium mb-2 text-[#1e3984]">Usuario</label>
@@ -43,3 +55,4 @@
     </div>
 </body>
 </html>
+
