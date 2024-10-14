@@ -13,13 +13,16 @@ from django.utils.decorators import method_decorator
 
 # Create your views here.
 
+
 class IncidenciaListView(View):
     model = Incidencia
     
     def get(self, request, *args, **kwargs):
-        
+        # Obtener todas las incidencias en orden inverso
+        incidencias = Incidencia.objects.all().order_by('-fecha')  # Suponiendo que 'fecha' es el campo de fecha
+
         context = {
-            'incidencias': Incidencia.objects.all(),
+            'incidencias': incidencias,
             'total_incidencias': Incidencia.objects.count(),
             'incidencias_atendidas': Incidencia.objects.filter(estado_incidencia='Atendida').count(),
             'incidencias_por_atender': Incidencia.objects.filter(estado_incidencia='Por atender').count(),
@@ -64,8 +67,20 @@ class LoginView(View):
 @method_decorator(login_required, name='dispatch')
 class IncidenciasView(View):
     def get(self, request, *args, **kwargs):
-        incidencias = Incidencia.objects.filter(estado_incidencia="Por atender") # Traer todas las incidencias
-        return render(request, "soporte_incidencias.html", {'incidencias': incidencias})
+        # Traer todas las incidencias, ordenadas para que las más recientes aparezcan primero
+        incidencias = Incidencia.objects.filter(estado_incidencia="Por atender").order_by('-id')
+        total_incidencias = Incidencia.objects.count()
+        incidencias_atendidas = Incidencia.objects.filter(estado_incidencia="Atendida").count()
+        incidencias_por_atender = Incidencia.objects.filter(estado_incidencia="Por atender").count()
+        incidencias_archivadas = Incidencia.objects.filter(estado_incidencia="Archivada").count()
+        
+        return render(request, "soporte_incidencias.html", {
+            'incidencias': incidencias,
+            'total_incidencias': total_incidencias,
+            'incidencias_atendidas': incidencias_atendidas,
+            'incidencias_por_atender': incidencias_por_atender,
+            'incidencias_archivadas': incidencias_archivadas,
+        })
 
     def post(self, request, *args, **kwargs):
         incidencia_id = request.POST.get('incidencia_id')

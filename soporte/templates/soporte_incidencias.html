@@ -6,29 +6,31 @@
     <div class="container mx-auto mt-5"> <!-- Agregado un contenedor para el espaciado -->
         <h2 class="text-2xl font-bold mb-4">NUEVAS INCIDENCIAS</h2>
 
-        {% for incidencia in incidencias %}
-            <div class="bg-white rounded-lg shadow p-4 mb-6">
-                <p class="font-bold mb-2">Incidencia [{{ incidencia.fecha|date:"H:i:s" }}]</p>
-                <p><span class="font-semibold">Aula:</span> {{ incidencia.salon }}</p>
-                <p><span class="font-semibold">Categoría:</span> {{ incidencia.tipo_incidencia }}</p>
-                <p><span class="font-semibold">Descripción:</span> {{ incidencia.descripcion_estado }}</p>
+        <div id="incidencias-list">
+            {% for incidencia in incidencias %}
+                <div class="incidencia bg-white rounded-lg shadow p-4 mb-6" data-id="{{ incidencia.id }}">
+                    <p class="font-bold mb-2">Incidencia [{{ incidencia.fecha|date:"H:i:s" }}]</p>
+                    <p><span class="font-semibold">Aula:</span> {{ incidencia.salon }}</p>
+                    <p><span class="font-semibold">Categoría:</span> {{ incidencia.tipo_incidencia }}</p>
+                    <p><span class="font-semibold">Descripción:</span> {{ incidencia.descripcion_estado }}</p>
 
-                <div class="mt-4 flex space-x-2">
-                    <form method="POST" action="{% url 'soporte:incidencias' %}" onsubmit="handleSubmit(event, this)">
-                        {% csrf_token %}
-                        <input type="hidden" name="incidencia_id" value="{{ incidencia.id }}">
-                        <input type="hidden" name="accion" value="atender">
-                        <button type="submit" class="bg-[#15bf40] text-white font-bold py-2 px-4 rounded hover:bg-[#0e9b35] transition duration-200">Atender</button>
-                    </form>
-                    <form method="POST" action="{% url 'soporte:incidencias' %}" onsubmit="handleSubmit(event, this)">
-                        {% csrf_token %}
-                        <input type="hidden" name="incidencia_id" value="{{ incidencia.id }}">
-                        <input type="hidden" name="accion" value="archivar">
-                        <button type="submit" class="bg-[#ff3c3c] text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition duration-200">Archivar</button>
-                    </form>
+                    <div class="mt-4 flex space-x-2">
+                        <form method="POST" action="{% url 'soporte:incidencias' %}" onsubmit="handleSubmit(event, this)">
+                            {% csrf_token %}
+                            <input type="hidden" name="incidencia_id" value="{{ incidencia.id }}">
+                            <input type="hidden" name="accion" value="atender">
+                            <button type="submit" class="bg-[#15bf40] text-white font-bold py-2 px-4 rounded hover:bg-[#0e9b35] transition duration-200">Atender</button>
+                        </form>
+                        <form method="POST" action="{% url 'soporte:incidencias' %}" onsubmit="handleSubmit(event, this)">
+                            {% csrf_token %}
+                            <input type="hidden" name="incidencia_id" value="{{ incidencia.id }}">
+                            <input type="hidden" name="accion" value="archivar">
+                            <button type="submit" class="bg-[#ff3c3c] text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition duration-200">Archivar</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 
     <script>
@@ -54,12 +56,15 @@
                 },
             })
             .then(response => {
-                // Manejar la respuesta del servidor si es necesario
                 if (response.ok) {
-                    // Aquí puedes hacer algo después de que se procese la solicitud
-                    console.log('Incidencia procesada'); // Mensaje de éxito (puedes cambiarlo)
+                    // Obtener el ID de la incidencia desde el formulario
+                    const incidenciaId = form.querySelector('input[name="incidencia_id"]').value;
+                    // Eliminar la incidencia de la lista
+                    const incidenciaElement = document.querySelector(`.incidencia[data-id="${incidenciaId}"]`);
+                    if (incidenciaElement) {
+                        incidenciaElement.remove(); // Elimina el elemento del DOM
+                    }
                 } else {
-                    // Manejar errores si es necesario
                     console.error('Error al procesar la incidencia');
                 }
             })
@@ -69,3 +74,4 @@
         }
     </script>
 {% endblock content %}
+
