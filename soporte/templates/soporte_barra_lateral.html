@@ -16,13 +16,13 @@
             <img src="{% static 'logo_fisi.png' %}" alt="Logo FISI" class="h-24 mb-2">
             <span class="text-[#ffc105] font-semibold text-lg text-center">SOPORTE TÉCNICO FISI</span>
         </header>
-        <nav class="flex-1 mt-4">
+        <nav class="flex-grow mt-4 overflow-y-auto">
             <ul class="space-y-0 text-center">
                 <li>
                     <a href="{% url 'soporte:incidencias' %}" class="block px-6 py-5 text-white hover:bg-[#1198d2] {% if request.path == '/soporte/incidencias/' %}bg-[#1198d2]{% endif %} transition">INCIDENCIAS</a>
                 </li>
                 <li>
-                    <a href="{% url 'soporte:listar_incidencias' %}" class="block px-6 py-5 text-white hover:bg-[#1198d2] {% if request.path == '/soporte/historial-incidencias/' %}bg-[#1198d2]{% endif %} transition">HISTORIAL INCIDENCIAS</a>
+                    <a href="{% url 'soporte:listar_incidencias' %}" class="block px-6 py-5 text-white hover:bg-[#1198d2] {% if request.path == '/soporte/listar-incidencias/' %}bg-[#1198d2]{% endif %} transition">HISTORIAL INCIDENCIAS</a>
                 </li>
                 <li>
                     <a href="{% url 'soporte:preguntas' %}" class="block px-6 py-5 text-white hover:bg-[#1198d2] {% if request.path == '/soporte/preguntas/' %}bg-[#1198d2]{% endif %} transition">PREGUNTAS FRECUENTES</a>
@@ -30,7 +30,14 @@
             </ul>
         </nav>
         <div class="p-4">
-            <a href="{% url 'soporte:login' %}" class="block text-white bg-[#1e3984] hover:bg-[#ff3c3c] transition text-center rounded-full px-6 py-4">SALIR</a>
+            <form method="post" action="{% url 'soporte:login' %}">
+                {% csrf_token %}
+                <input type="hidden" name="logout" value="true"> <!-- Añadido para indicar el cierre de sesión -->
+                <button type="submit" class="block w-full text-white bg-[#1e3984] hover:bg-[#ff3c3c] transition text-center mt-4 rounded-full px-6 py-4 hover:shadow-xl">
+                    SALIR
+                </button>
+            </form>
+
             <footer class="mt-6 text-center text-sm text-gray-300">
                 <p>© 2024 No Compila</p>
             </footer>

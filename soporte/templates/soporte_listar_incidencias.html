@@ -44,49 +44,75 @@
                     <span class="bg-red-500 text-white rounded-full px-4 py-2 mb-2 text-lg">
                         {{ incidencia.estado_incidencia }}
                     </span>
-                    <a href="javascript:void(0);" onclick="mostrarDetalles({{ incidencia.id }})" class="font-bold text-red-500 hover:text-red-600 transition duration-300">Ver Detalles</a>
+                    <a href="javascript:void(0);" onclick="mostrarDetalles({{ forloop.counter0 }})" class="font-bold text-red-500 hover:text-red-600 transition duration-300">Ver Detalles</a>
                 </div>
             </div>
             {% empty %}
             <p class="text-gray-600">No hay incidencias registradas.</p>
             {% endfor %}
         </div>
-
-        <!-- Contenedor para mostrar los detalles de la incidencia -->
-        <div id="detalle-incidencia" style="display: none;"></div>
-
     </div>
 
-    <!-- Script para manejar los detalles -->
+    <!-- Modal -->
+    <div id="detallesModal" class="fixed inset-0 flex items-center justify-center hidden bg-gray-800 bg-opacity-50">
+        <div class="bg-white rounded-lg p-6 w-3/4 h-3/4 max-w-2xl flex flex-col justify-between">
+            <h3 class="text-xl font-bold mb-6 text-center p-4">Detalles de la Incidencia</h3>
+            <div id="detallesContenido" class="space-y-2 overflow-auto flex-grow"></div>
+            <div class="flex justify-center mb-6">
+                <button onclick="cerrarModal()" class="bg-red-500 text-white px-6 py-3 rounded hover:bg-red-600 transition duration-300">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        function mostrarDetalles(incidenciaId) {
-            const newTab = window.open('', '_blank'); // Abre una nueva pestaña
-            fetch(`/soporte/incidencias/${incidenciaId}/`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error en la respuesta de la red');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    newTab.document.title = `Detalles de Incidencia ${incidenciaId}`; // Titulo de la nueva pestaña
-                    newTab.document.body.innerHTML = `
-                        <div class="container mx-auto mt-5">
-                            <h3 class="text-2xl font-bold mb-4">Incidencia ${data.hora}</h3>
-                            <p><strong>Emisor:</strong> ${data.emisor}</p>
-                            <p><strong>Aula:</strong> ${data.aula}</p>
-                            <p><strong>Categoría:</strong> ${data.categoria}</p>
-                            <p><strong>Descripción:</strong> ${data.descripcion}</p>
-                            <p><strong>Asignado:</strong> ${data.asignado}</p>
-                            <button onclick="window.close()">Cerrar</button>
-                        </div>
-                    `;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    newTab.document.body.innerHTML = '<p>Error al cargar los detalles.</p>';
-                });
+        // Usamos un arreglo para almacenar los datos de incidencias de manera local
+        const incidencias = [
+            {% for incidencia in incidencias %}
+            {
+                fecha_registro: "{{ incidencia.fecha }}",
+                emisor: "{{ incidencia.emisor }}",
+                tipo_incidencia: "{{ incidencia.tipo_incidencia }}",
+                dispositivo_afectado: "{{ incidencia.dispositivo_afectado }}",
+                salon: "{{ incidencia.salon }}",
+                descripcion_estado: "{{ incidencia.descripcion_estado }}",
+                comentarios: "{{ incidencia.comentarios|default:'No hay comentarios.' }}",
+                estado_incidencia: "{{ incidencia.estado_incidencia }}"
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+        
+        console.log("Incidencias:", incidencias);
+
+        function mostrarDetalles(index) {
+            try {
+                const incidencia = incidencias[index];
+                console.log("Detalles de la incidencia:", incidencia);
+
+                const modal = document.getElementById('detallesModal');
+                const detallesContenido = document.getElementById('detallesContenido');
+
+                detallesContenido.innerHTML = `
+                    <p><strong>Fecha:</strong> ${incidencia.fecha_registro}</p>
+                    <p><strong>Usuario Emisor:</strong> ${incidencia.emisor}</p>
+                    <p><strong>Tipo de Incidencia:</strong> ${incidencia.tipo_incidencia}</p>
+                    <p><strong>Dispositivo Afectado:</strong> ${incidencia.dispositivo_afectado}</p>
+                    <p><strong>Salón:</strong> ${incidencia.salon}</p>
+                    <p><strong>Descripción:</strong> ${incidencia.descripcion_estado}</p>
+                    <p><strong>Comentarios:</strong> ${incidencia.comentarios}</p>
+                    <p><strong>Estado:</strong> ${incidencia.estado_incidencia}</p>
+                `;
+
+                // Mostrar el modal
+                modal.classList.remove('hidden');
+            } catch (error) {
+                alert("Error al mostrar detalles de la incidencia: " + error.message);
+                console.error("Error al mostrar detalles de la incidencia:", error);
+            }
+        }
+
+        function cerrarModal() {
+            const modal = document.getElementById('detallesModal');
+            modal.classList.add('hidden');
         }
     </script>
 {% endblock content %}
-
