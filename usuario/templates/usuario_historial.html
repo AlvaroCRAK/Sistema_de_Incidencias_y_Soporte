@@ -70,6 +70,7 @@
                 salon: "{{ incidencia.salon }}",
                 descripcion_estado: "{{ incidencia.descripcion_estado }}",
                 comentarios: "{{ incidencia.comentarios|default:'No hay comentarios.' }}",
+                observaciones: "{{ incidencia.observaciones }}",
                 estado_incidencia: "{{ incidencia.estado_incidencia }}"
             }{% if not forloop.last %},{% endif %}
             {% endfor %}
@@ -79,6 +80,7 @@
             const incidencia = incidencias[index];
             const modal = document.getElementById('detallesModal');
             const detallesContenido = document.getElementById('detallesContenido');
+            console.log(incidencia)
 
             detallesContenido.innerHTML = `
                 <p><strong>Ticket:</strong> ${incidencia.ticket}</p>
@@ -89,6 +91,7 @@
                 <p><strong>Salón:</strong> ${incidencia.salon}</p>
                 <p><strong>Descripción:</strong> ${incidencia.descripcion_estado}</p>
                 <p><strong>Comentarios:</strong> ${incidencia.comentarios}</p>
+                <p><strong>Observaciones:</strong> ${incidencia.observaciones}</p>
                 <p><strong>Estado:</strong> ${incidencia.estado_incidencia}</p>
             `;
 

@@ -13,22 +13,30 @@
                     <p><span class="font-semibold">Aula:</span> {{ incidencia.salon }}</p>
                     <p><span class="font-semibold">Categoría:</span> {{ incidencia.tipo_incidencia }}</p>
                     <p><span class="font-semibold">Descripción:</span> {{ incidencia.descripcion_estado }}</p>
+                    
+                    <!-- Campo para observaciones -->
+                </div<!-- Dentro de la sección de "Observaciones" -->
+              <div class="mb-4">
+                  <label for="observaciones-{{ incidencia.id }}" class="block font-semibold">Observaciones:</label>
+                  <textarea id="observaciones-{{ incidencia.id }}" name="observaciones" class="border rounded w-full p-2" rows="3"></textarea>
+              </div>
 
-                    <div class="mt-4 flex space-x-2">
-                        <form method="POST" action="{% url 'soporte:incidencias' %}" onsubmit="handleSubmit(event, this)">
-                            {% csrf_token %}
-                            <input type="hidden" name="incidencia_id" value="{{ incidencia.id }}">
-                            <input type="hidden" name="accion" value="atender">
-                            <button type="submit" class="bg-[#15bf40] text-white font-bold py-2 px-4 rounded hover:bg-[#0e9b35] transition duration-200">Atender</button>
-                        </form>
-                        <form method="POST" action="{% url 'soporte:incidencias' %}" onsubmit="handleSubmit(event, this)">
-                            {% csrf_token %}
-                            <input type="hidden" name="incidencia_id" value="{{ incidencia.id }}">
-                            <input type="hidden" name="accion" value="archivar">
-                            <button type="submit" class="bg-[#ff3c3c] text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition duration-200">Archivar</button>
-                        </form>
-                    </div>
-                </div>
+              <div class="mt-4 flex space-x-2">
+                  <form method="POST" action="{% url 'soporte:incidencias' %}" onsubmit="handleSubmit(event, this)">
+                      {% csrf_token %}
+                      <input type="hidden" name="incidencia_id" value="{{ incidencia.id }}">
+                      <input type="hidden" name="accion" value="atender">
+                      <input type="hidden" name="observaciones" id="input-observaciones-{{ incidencia.id }}">
+                      <button type="submit" class="bg-[#15bf40] text-white font-bold py-2 px-4 rounded hover:bg-[#0e9b35] transition duration-200">Atender</button>
+                  </form>
+                  <form method="POST" action="{% url 'soporte:incidencias' %}" onsubmit="handleSubmit(event, this)">
+                      {% csrf_token %}
+                      <input type="hidden" name="incidencia_id" value="{{ incidencia.id }}">
+                      <input type="hidden" name="accion" value="archivar">
+                      <input type="hidden" name="observaciones" id="input-observaciones-{{ incidencia.id }}">
+                      <button type="submit" class="bg-[#ff3c3c] text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition duration-200">Archivar</button>
+                    </form>
+                </div>>
             {% endfor %}
         </div>
     </div>
@@ -46,6 +54,16 @@
                 button.innerText = 'Procesando...'; // Cambia el texto del botón
             });
 
+            // Obtener el ID de la incidencia desde el formulario
+            const incidenciaId = form.querySelector('input[name="incidencia_id"]').value;
+
+            // Obtener el valor de las observaciones
+            const observaciones = document.getElementById(`observaciones-${incidenciaId}`).value;
+
+            // Agregar el valor de las observaciones al formulario
+            const inputObservaciones = form.querySelector('input[name="observaciones"]');
+            inputObservaciones.value = observaciones;
+
             // Enviar el formulario usando fetch
             const formData = new FormData(form);
             fetch(form.action, {
@@ -57,8 +75,6 @@
             })
             .then(response => {
                 if (response.ok) {
-                    // Obtener el ID de la incidencia desde el formulario
-                    const incidenciaId = form.querySelector('input[name="incidencia_id"]').value;
                     // Eliminar la incidencia de la lista
                     const incidenciaElement = document.querySelector(`.incidencia[data-id="${incidenciaId}"]`);
                     if (incidenciaElement) {

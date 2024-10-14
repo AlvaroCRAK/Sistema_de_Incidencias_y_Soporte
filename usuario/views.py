@@ -40,7 +40,9 @@ class HistorialView(View):
                 tipo_incidencia_nombre = TipoDeIncidencia.objects.get(id=incidencia['tipo_incidencia']).tipo
                 dispositivo_afectado_nombre = DispositivoAfectado.objects.get(id=incidencia['dispositivo_afectado']).dispositivo
                 descripcion_estado_nombre = DescripcionDelEstado.objects.get(id=incidencia['descripcion_estado']).descripcion
+
                 estado_actualizado = Incidencia.objects.get(ticket=incidencia["ticket"]).estado_incidencia
+
                 
                 # Agregar los nombres al diccionario
                 incidencia["estado_incidencia"] = estado_actualizado
@@ -48,6 +50,8 @@ class HistorialView(View):
                 incidencia['tipo_incidencia'] = tipo_incidencia_nombre
                 incidencia['dispositivo_afectado'] = dispositivo_afectado_nombre
                 incidencia['descripcion_estado'] = descripcion_estado_nombre
+
+                incidencia['observaciones'] = Incidencia.objects.get(ticket=incidencia["ticket"]).observaciones
                 
                 incidencias.append(incidencia)
         
@@ -78,7 +82,9 @@ class ReportarIncidenciasView(View):
                 "descripcion_estado": request.POST.get('descripcion_estado'),  # Debe estar en el formulario
                 "comentarios": form.cleaned_data['comentarios'],
                 "estado_incidencia" : "Por atender",
-                "fecha_registro": datetime.now().strftime("%b. %d, %Y, %I:%M %p").lstrip("0").replace("AM", "a.m.").replace("PM", "p.m.")
+                "fecha_registro": datetime.now().strftime("%b. %d, %Y, %I:%M %p").lstrip("0").replace("AM", "a.m.").replace("PM", "p.m."),
+                "observaciones": "Derivado",
+
             }
 
             # Enviar la incidencia a la API

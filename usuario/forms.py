@@ -6,7 +6,7 @@ class IncidenciaForm(forms.ModelForm):
         model = Incidencia
         fields = [
             'emisor', 'tipo_incidencia', 'dispositivo_afectado', 
-            'descripcion_estado', 'salon', 'comentarios'
+            'descripcion_estado', 'salon', 'comentarios', 'observaciones'
         ]
         
         widgets = {

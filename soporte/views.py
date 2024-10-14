@@ -27,6 +27,7 @@ class IncidenciaListView(View):
             'incidencias_atendidas': Incidencia.objects.filter(estado_incidencia='Atendida').count(),
             'incidencias_por_atender': Incidencia.objects.filter(estado_incidencia='Por atender').count(),
             'incidencias_archivadas': Incidencia.objects.filter(estado_incidencia='Archivada').count(),
+            'incidencia_observaciones': Incidencia.objects.all(),
         }
         
         # Renderizar la plantilla con el contexto
@@ -67,7 +68,6 @@ class LoginView(View):
 @method_decorator(login_required, name='dispatch')
 class IncidenciasView(View):
     def get(self, request, *args, **kwargs):
-        # Traer todas las incidencias, ordenadas para que las más recientes aparezcan primero
         incidencias = Incidencia.objects.filter(estado_incidencia="Por atender").order_by('-id')
         total_incidencias = Incidencia.objects.count()
         incidencias_atendidas = Incidencia.objects.filter(estado_incidencia="Atendida").count()
@@ -85,6 +85,7 @@ class IncidenciasView(View):
     def post(self, request, *args, **kwargs):
         incidencia_id = request.POST.get('incidencia_id')
         accion = request.POST.get('accion')
+        observaciones = request.POST.get('observaciones')  # Obtener observaciones
 
         # Busca la incidencia correspondiente
         incidencia = Incidencia.objects.get(id=incidencia_id)
@@ -95,10 +96,10 @@ class IncidenciasView(View):
         elif accion == 'archivar':
             incidencia.estado_incidencia = 'Archivada'
 
-        # Guarda la incidencia actualizada
+        # Guarda las observaciones
+        incidencia.observaciones = observaciones  # Asigna las observaciones
         incidencia.save()
 
-        # Redirigir a la vista de incidencias después de actualizar
         return redirect('soporte:incidencias')
 
 class IncidenciaCreateView ( generics.CreateAPIView ):

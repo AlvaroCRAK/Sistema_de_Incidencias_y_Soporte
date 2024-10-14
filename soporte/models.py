@@ -47,5 +47,7 @@ class Incidencia ( models.Model ):
     
     fecha = models.DateTimeField ( auto_now_add = True )
     
+    observaciones = models.TextField ( blank = True )
+    
     def __str__ ( self ):
         return f'Incidencia #{self.id} - {self.tipo_incidencia.tipo}'

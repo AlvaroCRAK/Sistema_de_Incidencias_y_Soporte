@@ -82,30 +82,37 @@
     </div>
 
     <script>
-        // Usamos un arreglo para almacenar los datos de incidencias de manera local
-        const incidencias = [
-            {% for incidencia in incidencias %}
-            {
-                ticket: "{{ incidencia.ticket }}",
-                fecha_registro: "{{ incidencia.fecha }}",
-                emisor: "{{ incidencia.emisor }}",
-                tipo_incidencia: "{{ incidencia.tipo_incidencia }}",
-                dispositivo_afectado: "{{ incidencia.dispositivo_afectado }}",
-                salon: "{{ incidencia.salon }}",
-                descripcion_estado: "{{ incidencia.descripcion_estado }}",
-                comentarios: "{{ incidencia.comentarios|default:'No hay comentarios.' }}",
-                estado_incidencia: "{{ incidencia.estado_incidencia }}"
-            }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        ];
+    const incidencias = [
+        {% for incidencia in incidencias %}
+        {
+            ticket: "{{ incidencia.ticket }}",
+            fecha_registro: "{{ incidencia.fecha }}",
+            emisor: "{{ incidencia.emisor }}",
+            tipo_incidencia: "{{ incidencia.tipo_incidencia }}",
+            dispositivo_afectado: "{{ incidencia.dispositivo_afectado }}",
+            salon: "{{ incidencia.salon }}",
+            descripcion_estado: "{{ incidencia.descripcion_estado }}",
+            comentarios: "{{ incidencia.comentarios|default:'No hay comentarios.' }}",
+            observaciones: "{{ incidencia.observaciones }}",
+            estado_incidencia: "{{ incidencia.estado_incidencia }}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
 
-        function mostrarDetalles(index) {
+    function mostrarDetalles(index) {
+      // Usamos un arreglo para almacenar los datos de incidencias de manera local
+
             const incidencia = incidencias[index];
             const modal = document.getElementById('detallesModal');
             const detallesContenido = document.getElementById('detallesContenido');
 
-            detallesContenido.innerHTML = `
-                <p><strong>Ticket:</strong> ${incidencia.ticket}</p>
+            console.log (incidencia);
+            console.log(incidencia.observaciones); // Verifica qué valor tiene
+            console.log(incidencia.ticket);
+  
+
+            detallesContenido.innerHTML = 
+                `<p><strong>Ticket:</strong> ${incidencia.ticket}</p>
                 <p><strong>Fecha:</strong> ${incidencia.fecha_registro}</p>
                 <p><strong>Usuario Emisor:</strong> ${incidencia.emisor}</p>
                 <p><strong>Tipo de Incidencia:</strong> ${incidencia.tipo_incidencia}</p>
@@ -113,9 +120,9 @@
                 <p><strong>Salón:</strong> ${incidencia.salon}</p>
                 <p><strong>Descripción:</strong> ${incidencia.descripcion_estado}</p>
                 <p><strong>Comentarios:</strong> ${incidencia.comentarios}</p>
-                <p><strong>Estado:</strong> ${incidencia.estado_incidencia}</p>
-            `;
-
+                <p><strong>Observaciones</strong> ${incidencia.observaciones}</p>
+                <p><strong>Estado:</strong> ${incidencia.estado_incidencia}</p>`;
+            
             modal.classList.remove('hidden');
         }
 
