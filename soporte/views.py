@@ -22,8 +22,8 @@ class IncidenciaListView(View):
             'incidencias': Incidencia.objects.all(),
             'total_incidencias': Incidencia.objects.count(),
             'incidencias_atendidas': Incidencia.objects.filter(estado_incidencia='Atendida').count(),
-            'incidencias_en_atencion': Incidencia.objects.filter(estado_incidencia='Atendiendo').count(),
-            'incidencias_pendientes': Incidencia.objects.filter(estado_incidencia='Por atender').count()
+            'incidencias_por_atender': Incidencia.objects.filter(estado_incidencia='Por atender').count(),
+            'incidencias_archivadas': Incidencia.objects.filter(estado_incidencia='Archivada').count(),
         }
         
         # Renderizar la plantilla con el contexto

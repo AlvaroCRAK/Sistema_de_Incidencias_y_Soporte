@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import  Usuario, Soporte, DescripcionDelEstado, DispositivoAfectado, TipoDeIncidencia, Salon, Incidencia
+from .models import Usuario, Soporte, DescripcionDelEstado, DispositivoAfectado, TipoDeIncidencia, Salon, Incidencia
 
 @admin.register(Usuario)
 class UsuarioAdmin(admin.ModelAdmin):
@@ -34,9 +34,9 @@ class SalonAdmin(admin.ModelAdmin):
 @admin.register(Incidencia)
 class IncidenciaAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'emisor', 'tipo_incidencia', 'dispositivo_afectado', 
+        'id', 'ticket', 'emisor', 'estado_incidencia', 
+        'tipo_incidencia', 'dispositivo_afectado', 
         'descripcion_estado', 'salon', 'fecha'
     ]
-    list_filter = ['fecha', 'tipo_incidencia', 'salon']
-    search_fields = ['emisor__nombre', 'tipo_incidencia__tipo', 'dispositivo_afectado__dispositivo']
-
+    list_filter = ['fecha', 'tipo_incidencia', 'salon', 'estado_incidencia']
+    search_fields = ['emisor', 'ticket', 'tipo_incidencia__tipo', 'dispositivo_afectado__dispositivo']

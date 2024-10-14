@@ -34,6 +34,7 @@ class Salon ( models.Model ):
         return self.salon
 
 class Incidencia ( models.Model ):
+    ticket = models.CharField ( max_length = 8 )
     emisor = models.CharField ( max_length = 100, null = False )
     
     estado_incidencia = models.CharField( max_length = 25, default = "Por atender")

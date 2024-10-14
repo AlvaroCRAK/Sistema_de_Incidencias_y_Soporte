@@ -3,47 +3,67 @@
 {% block title %}Incidencias{% endblock title %}
 
 {% block content %}
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div class="bg-[#1198d2] text-white rounded-lg shadow p-4 text-center">
-            <p class="text-sm">Cantidad de incidencias reportadas</p>
-            <h2 class="text-3xl font-bold">{{ total_incidencias }}</h2>
-        </div>
-        <div class="bg-[#15bf40] text-white rounded-lg shadow p-4 text-center">
-            <p class="text-sm">Incidencias atendidas</p>
-            <h2 class="text-3xl font-bold">{{ incidencias_atendidas }}</h2>
-        </div>
-        <div class="bg-[#ffc105] text-white rounded-lg shadow p-4 text-center">
-            <p class="text-sm">Incidencias en atención</p>
-            <h2 class="text-3xl font-bold">{{ incidencias_en_atencion }}</h2>
-        </div>
-        <div class="bg-[#ff3c3c] text-white rounded-lg shadow p-4 text-center">
-            <p class="text-sm">Incidencias por atender</p>
-            <h2 class="text-3xl font-bold">{{ incidencias_pendientes }}</h2>
-        </div>
+    <div class="container mx-auto mt-5"> <!-- Agregado un contenedor para el espaciado -->
+        {% for incidencia in incidencias %}
+            <div class="bg-white rounded-lg shadow p-4 mb-6">
+                <p class="font-bold mb-2">Incidencia [{{ incidencia.fecha|date:"H:i:s" }}]</p>
+                <p><span class="font-semibold">Aula:</span> {{ incidencia.salon }}</p>
+                <p><span class="font-semibold">Categoría:</span> {{ incidencia.tipo_incidencia }}</p>
+                <p><span class="font-semibold">Descripción:</span> {{ incidencia.descripcion_estado }}</p>
+
+                <div class="mt-4 flex space-x-2">
+                    <form method="POST" action="{% url 'soporte:incidencias' %}" onsubmit="handleSubmit(event, this)">
+                        {% csrf_token %}
+                        <input type="hidden" name="incidencia_id" value="{{ incidencia.id }}">
+                        <input type="hidden" name="accion" value="atender">
+                        <button type="submit" class="bg-[#15bf40] text-white font-bold py-2 px-4 rounded hover:bg-[#0e9b35] transition duration-200">Atender</button>
+                    </form>
+                    <form method="POST" action="{% url 'soporte:incidencias' %}" onsubmit="handleSubmit(event, this)">
+                        {% csrf_token %}
+                        <input type="hidden" name="incidencia_id" value="{{ incidencia.id }}">
+                        <input type="hidden" name="accion" value="archivar">
+                        <button type="submit" class="bg-[#ff3c3c] text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition duration-200">Archivar</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 
-    {% for incidencia in incidencias %}
-        <div class="bg-white rounded-lg shadow p-4 mb-6">
-            <p class="font-bold mb-2">Incidencia [{{ incidencia.fecha|date:"H:i:s" }}]</p>
-            <p><span class="font-semibold">Aula:</span> {{ incidencia.salon }}</p>
-            <p><span class="font-semibold">Categoría:</span> {{ incidencia.tipo_incidencia }}</p>
-            <p><span class="font-semibold">Descripción:</span> {{ incidencia.descripcion_estado }}</p>
+    <script>
+        function handleSubmit(event, form) {
+            // Evitar el envío predeterminado del formulario
+            event.preventDefault(); 
 
-            <div class="mt-4 flex space-x-2">
-                <form method="POST" action="{% url 'soporte:incidencias' %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="incidencia_id" value="{{ incidencia.id }}">
-                    <input type="hidden" name="accion" value="atender">
-                    <button type="submit" class="bg-[#15bf40] text-white font-bold py-2 px-4 rounded hover:bg-[#0e9b35] transition duration-200">Atender</button>
-                </form>
-                <form method="POST" action="{% url 'soporte:incidencias' %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="incidencia_id" value="{{ incidencia.id }}">
-                    <input type="hidden" name="accion" value="archivar">
-                    <button type="submit" class="bg-[#ff3c3c] text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition duration-200">Archivar</button>
-                </form>
-            </div>
-        </div>
-    {% endfor %}
+            // Deshabilita todos los botones en el formulario
+            const buttons = form.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.disabled = true;
+                button.classList.add('opacity-50', 'cursor-not-allowed'); // Estilos para indicar que están deshabilitados
+                button.innerText = 'Procesando...'; // Cambia el texto del botón
+            });
+
+            // Enviar el formulario usando fetch
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}', // Agregar el token CSRF
+                },
+            })
+            .then(response => {
+                // Manejar la respuesta del servidor si es necesario
+                if (response.ok) {
+                    // Aquí puedes hacer algo después de que se procese la solicitud
+                    console.log('Incidencia procesada'); // Mensaje de éxito (puedes cambiarlo)
+                } else {
+                    // Manejar errores si es necesario
+                    console.error('Error al procesar la incidencia');
+                }
+            })
+            .catch(error => {
+                console.error('Error en la solicitud:', error);
+            });
+        }
+    </script>
 {% endblock content %}
-

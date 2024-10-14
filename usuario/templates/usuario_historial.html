@@ -5,25 +5,40 @@
 {% block content %}
     <div class="container mx-auto mt-5">
         <h2 class="text-2xl font-bold mb-4">MIS INCIDENCIAS</h2>
-        
+
+        <!-- Contenedor para el campo de búsqueda y el botón -->
+        <div class="flex items-center mb-6">
+            <input type="text" id="ticketInput" placeholder="Buscar incidencia por ticket..." class="border rounded-lg py-2 px-4 flex-grow" aria-label="Buscar incidencia">
+            <button onclick="buscarPorTicket()" class="ml-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300" aria-label="Buscar">Buscar</button>
+        </div>
+
         <div class="flex flex-col space-y-4">
             {% for incidencia in incidencias %}
-            <div class="bg-white shadow-md rounded-lg p-4 w-full flex">
-                <div class="flex-1">
-                    <h3 class="text-lg font-semibold mb-2 text-gray-800">
-                        Incidencia [{{ incidencia.fecha_registro }}]
-                    </h3>
-                    <p class="text-gray-600"><strong>Usuario Emisor:</strong> {{ incidencia.emisor }}</p>
-                    <p class="text-gray-600"><strong>Tipo de Incidencia:</strong> {{ incidencia.tipo_incidencia }}</p>
-                    <p class="text-gray-600"><strong>Dispositivo Afectado:</strong> {{ incidencia.dispositivo_afectado }}</p>
-                    <p class="text-gray-600"><strong>Salón:</strong> {{ incidencia.salon }}</p>
-                    <p class="text-gray-600"><strong>Descripción:</strong> {{ incidencia.descripcion_estado }}</p>
+            <div class="bg-white shadow-md rounded-lg p-4 w-full flex transition-transform transform duration-300">
+                <div class="flex-1 px-2">
+                    <h3 class="text-2xl mb-2 text-red-500 py-2"><strong>Incidencia [{{ incidencia.ticket }}]</strong></h3>
+                    <p class="text-gray-700"><strong>Fecha de Registro:</strong> <span class="font-medium">{{ incidencia.fecha_registro }}</span></p>
+                    <p class="text-gray-700"><strong>Usuario Emisor:</strong> <span class="font-medium">{{ incidencia.emisor }}</span></p>
+                    <p class="text-gray-700"><strong>Tipo de Incidencia:</strong> <span class="font-medium">{{ incidencia.tipo_incidencia }}</span></p>
+                    <p class="text-gray-700"><strong>Dispositivo Afectado:</strong> <span class="font-medium">{{ incidencia.dispositivo_afectado }}</span></p>
+                    <p class="text-gray-700"><strong>Salón:</strong> <span class="font-medium">{{ incidencia.salon }}</span></p>
+                    <p class="text-gray-700 pb-2"><strong>Descripción:</strong> <span class="font-medium">{{ incidencia.descripcion_estado }}</span></p>
                 </div>  
-                <div class="flex flex-col items-center justify-between ml-4">
-                    <span class="bg-red-500 text-white rounded-full px-4 py-2 mb-2 text-lg">
-                        {{ incidencia.estado_incidencia }}
-                    </span>
-                    <a href="javascript:void(0);" onclick="mostrarDetalles({{ forloop.counter0 }})" class="font-bold text-red-500 hover:text-red-600 transition duration-300">Ver Detalles</a>
+                <div class="flex flex-col items-center justify-between ml-4 py-1.5 px-3">
+                    {% if incidencia.estado_incidencia == "Atendida" %}
+                        <span class="bg-green-500 font-bold text-xl text-white rounded-full px-4 py-2 mb-2 shadow-lg">
+                            {{ incidencia.estado_incidencia }}
+                        </span>
+                    {% elif incidencia.estado_incidencia == "Por atender" %}
+                        <span class="bg-yellow-400 font-bold text-xl text-white rounded-full px-4 py-2 mb-2 shadow-lg">
+                            {{ incidencia.estado_incidencia }}
+                        </span>
+                    {% else %}
+                        <span class="bg-red-500 font-bold text-xl text-white rounded-full px-4 py-2 mb-2 shadow-lg">
+                            {{ incidencia.estado_incidencia }}
+                        </span>
+                    {% endif %}
+                    <a href="javascript:void(0);" onclick="mostrarDetalles({{ forloop.counter0 }})" class="font-bold text-black text-lg">Ver Detalles</a>
                 </div>
             </div>
             {% empty %}
@@ -35,43 +50,65 @@
     <!-- Modal -->
     <div id="detallesModal" class="fixed inset-0 flex items-center justify-center hidden bg-gray-800 bg-opacity-50">
         <div class="bg-white rounded-lg p-6 w-3/4 h-3/4 max-w-2xl flex flex-col justify-between">
-            <h3 class="text-xl font-bold mb-6 text-center p-4">Detalles de la Incidencia</h3> <!-- Aumentado el padding -->
-            <div id="detallesContenido" class="space-y-2 overflow-auto flex-grow"> <!-- Permite que el contenido ocupe el espacio disponible -->
-                <!-- Aquí se rellenarán los detalles -->
-            </div>
-            <div class="flex justify-center mb-6"> <!-- Aumentado el margen inferior -->
-                <button onclick="cerrarModal()" class="bg-red-500 text-white px-6 py-3 rounded hover:bg-red-600 transition duration-300">Cerrar</button> <!-- Aumentado el padding -->
+            <h3 class="text-xl font-bold mb-6 text-center p-4">Detalles de la Incidencia</h3>
+            <div id="detallesContenido" class="space-y-2 overflow-auto flex-grow"></div>
+            <div class="flex justify-center mb-6">
+                <button onclick="cerrarModal()" class="bg-red-500 text-white px-6 py-3 rounded hover:bg-red-600 transition duration-300">Cerrar</button>
             </div>
         </div>
     </div>
 
     <script>
-        const incidencias = {{ incidencias|safe }};
+        const incidencias = [
+            {% for incidencia in incidencias %}
+            {
+                ticket: "{{ incidencia.ticket }}",
+                fecha_registro: "{{ incidencia.fecha_registro }}",
+                emisor: "{{ incidencia.emisor }}",
+                tipo_incidencia: "{{ incidencia.tipo_incidencia }}",
+                dispositivo_afectado: "{{ incidencia.dispositivo_afectado }}",
+                salon: "{{ incidencia.salon }}",
+                descripcion_estado: "{{ incidencia.descripcion_estado }}",
+                comentarios: "{{ incidencia.comentarios|default:'No hay comentarios.' }}",
+                estado_incidencia: "{{ incidencia.estado_incidencia }}"
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
 
         function mostrarDetalles(index) {
             const incidencia = incidencias[index];
             const modal = document.getElementById('detallesModal');
             const detallesContenido = document.getElementById('detallesContenido');
 
-            // Rellenar los detalles de la incidencia en el modal
             detallesContenido.innerHTML = `
-                <p><strong>Fecha:</strong> ${incidencia.fecha_registro}</p>
+                <p><strong>Ticket:</strong> ${incidencia.ticket}</p>
+                <p><strong>Fecha de Registro:</strong> ${incidencia.fecha_registro}</p>
                 <p><strong>Usuario Emisor:</strong> ${incidencia.emisor}</p>
                 <p><strong>Tipo de Incidencia:</strong> ${incidencia.tipo_incidencia}</p>
                 <p><strong>Dispositivo Afectado:</strong> ${incidencia.dispositivo_afectado}</p>
                 <p><strong>Salón:</strong> ${incidencia.salon}</p>
                 <p><strong>Descripción:</strong> ${incidencia.descripcion_estado}</p>
-                <p><strong>Comentarios:</strong> ${incidencia.comentarios || 'No hay comentarios.'}</p>
+                <p><strong>Comentarios:</strong> ${incidencia.comentarios}</p>
                 <p><strong>Estado:</strong> ${incidencia.estado_incidencia}</p>
             `;
 
-            // Mostrar el modal
             modal.classList.remove('hidden');
         }
 
         function cerrarModal() {
             const modal = document.getElementById('detallesModal');
             modal.classList.add('hidden');
+        }
+
+        function buscarPorTicket() {
+            const ticketInput = document.getElementById('ticketInput').value.trim(); // Eliminar espacios en blanco
+            const incidenciaIndex = incidencias.findIndex(incidencia => incidencia.ticket === ticketInput);
+
+            if (incidenciaIndex !== -1) {
+                mostrarDetalles(incidenciaIndex);
+            } else {
+                alert('Incidencia no encontrada.');
+            }
         }
     </script>
 {% endblock content %}

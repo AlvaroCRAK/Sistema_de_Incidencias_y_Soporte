@@ -4,8 +4,8 @@
 
 {% block content %}
     <div class="container mx-auto mt-5">
-        <h2 class="text-2xl font-bold mb-4">Todas las Incidencias</h2>
-        
+        <h2 class="text-2xl font-bold mb-4">TODAS LAS INCIDENCIAS</h2>
+
         <!-- Div que contiene la cantidad de incidencias -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div class="bg-[#1198d2] text-white rounded-lg shadow p-4 text-center">
@@ -20,31 +20,49 @@
 
             <div class="bg-[#ffc105] text-white rounded-lg shadow p-4 text-center">
                 <p class="text-sm">Incidencias en atención</p>
-                <h2 class="text-3xl font-bold">{{ incidencias_en_atencion }}</h2>
+                <h2 class="text-3xl font-bold">{{ incidencias_por_atender }}</h2>
             </div>
 
             <div class="bg-[#ff3c3c] text-white rounded-lg shadow p-4 text-center">
                 <p class="text-sm">Incidencias por atender</p>
-                <h2 class="text-3xl font-bold">{{ incidencias_pendientes }}</h2>
+                <h2 class="text-3xl font-bold">{{ incidencias_archivadas }}</h2>
             </div>
         </div>
 
-        <div class="flex flex-col space-y-4">
+        
+        <!-- Contenedor para el campo de búsqueda y el botón -->
+        <div class="flex items-center mb-6">
+            <input type="text" id="ticketInput" placeholder="Buscar incidencia por ticket..." class="border rounded-lg py-2 px-4 flex-grow" aria-label="Buscar incidencia">
+            <button onclick="buscarPorTicket()" class="ml-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300" aria-label="Buscar">Buscar</button>
+        </div>
+
+
+        <div id="incidenciasContainer" class="flex flex-col space-y-4">
             {% for incidencia in incidencias %}
-            <div class="bg-white shadow-md rounded-lg p-4 w-full flex">
-                <div class="flex-1">
-                    <h3 class="text-lg font-semibold mb-2 text-gray-800">Incidencia [{{ incidencia.fecha }}]</h3>
-                    <p class="text-gray-600"><strong>Usuario Emisor:</strong> {{ incidencia.emisor }}</p>
-                    <p class="text-gray-600"><strong>Tipo de Incidencia:</strong> {{ incidencia.tipo_incidencia }}</p>
-                    <p class="text-gray-600"><strong>Dispositivo Afectado:</strong> {{ incidencia.dispositivo_afectado }}</p>
-                    <p class="text-gray-600"><strong>Salón:</strong> {{ incidencia.salon }}</p>
-                    <p class="text-gray-600"><strong>Descripción:</strong> {{ incidencia.descripcion_estado }}</p>
+            <div class="bg-white shadow-md rounded-lg p-4 w-full flex transition-transform transform duration-300 incidencia-item">
+                <div class="flex-1 px-2">
+                    <h3 class="text-2xl mb-2 text-red-500 py-2"><strong>Incidencia [{{ incidencia.ticket }}]</strong></h3>
+                    <p class="text-gray-700"><strong>Usuario Emisor:</strong> <span class="font-medium">{{ incidencia.emisor }}</span></p>
+                    <p class="text-gray-700"><strong>Tipo de Incidencia:</strong> <span class="font-medium">{{ incidencia.tipo_incidencia }}</span></p>
+                    <p class="text-gray-700"><strong>Dispositivo Afectado:</strong> <span class="font-medium">{{ incidencia.dispositivo_afectado }}</span></p>
+                    <p class="text-gray-700"><strong>Salón:</strong> <span class="font-medium">{{ incidencia.salon }}</span></p>
+                    <p class="text-gray-700 pb-2"><strong>Descripción:</strong> <span class="font-medium">{{ incidencia.descripcion_estado }}</span></p>
                 </div>  
-                <div class="flex flex-col items-center justify-between ml-4">
-                    <span class="bg-red-500 text-white rounded-full px-4 py-2 mb-2 text-lg">
-                        {{ incidencia.estado_incidencia }}
-                    </span>
-                    <a href="javascript:void(0);" onclick="mostrarDetalles({{ forloop.counter0 }})" class="font-bold text-red-500 hover:text-red-600 transition duration-300">Ver Detalles</a>
+                <div class="flex flex-col items-center justify-between ml-4 py-1.5 px-3">
+                    {% if incidencia.estado_incidencia == "Atendida" %}
+                        <span class="bg-green-500 font-bold text-xl text-white rounded-full px-4 py-2 mb-2 shadow-lg">
+                            {{ incidencia.estado_incidencia }}
+                        </span>
+                    {% elif incidencia.estado_incidencia == "Por atender" %}
+                        <span class="bg-yellow-400 font-bold text-xl text-white rounded-full px-4 py-2 mb-2 shadow-lg">
+                            {{ incidencia.estado_incidencia }}
+                        </span>
+                    {% else %}
+                        <span class="bg-red-500 font-bold text-xl text-white rounded-full px-4 py-2 mb-2 shadow-lg">
+                            {{ incidencia.estado_incidencia }}
+                        </span>
+                    {% endif %}
+                    <a href="javascript:void(0);" onclick="mostrarDetalles({{ forloop.counter0 }})" class="font-bold text-black text-lg">Ver Detalles</a>
                 </div>
             </div>
             {% empty %}
@@ -69,6 +87,7 @@
         const incidencias = [
             {% for incidencia in incidencias %}
             {
+                ticket: "{{ incidencia.ticket }}",
                 fecha_registro: "{{ incidencia.fecha }}",
                 emisor: "{{ incidencia.emisor }}",
                 tipo_incidencia: "{{ incidencia.tipo_incidencia }}",
@@ -80,39 +99,42 @@
             }{% if not forloop.last %},{% endif %}
             {% endfor %}
         ];
-        
-        console.log("Incidencias:", incidencias);
 
         function mostrarDetalles(index) {
-            try {
-                const incidencia = incidencias[index];
-                console.log("Detalles de la incidencia:", incidencia);
+            const incidencia = incidencias[index];
+            const modal = document.getElementById('detallesModal');
+            const detallesContenido = document.getElementById('detallesContenido');
 
-                const modal = document.getElementById('detallesModal');
-                const detallesContenido = document.getElementById('detallesContenido');
+            detallesContenido.innerHTML = `
+                <p><strong>Ticket:</strong> ${incidencia.ticket}</p>
+                <p><strong>Fecha:</strong> ${incidencia.fecha_registro}</p>
+                <p><strong>Usuario Emisor:</strong> ${incidencia.emisor}</p>
+                <p><strong>Tipo de Incidencia:</strong> ${incidencia.tipo_incidencia}</p>
+                <p><strong>Dispositivo Afectado:</strong> ${incidencia.dispositivo_afectado}</p>
+                <p><strong>Salón:</strong> ${incidencia.salon}</p>
+                <p><strong>Descripción:</strong> ${incidencia.descripcion_estado}</p>
+                <p><strong>Comentarios:</strong> ${incidencia.comentarios}</p>
+                <p><strong>Estado:</strong> ${incidencia.estado_incidencia}</p>
+            `;
 
-                detallesContenido.innerHTML = `
-                    <p><strong>Fecha:</strong> ${incidencia.fecha_registro}</p>
-                    <p><strong>Usuario Emisor:</strong> ${incidencia.emisor}</p>
-                    <p><strong>Tipo de Incidencia:</strong> ${incidencia.tipo_incidencia}</p>
-                    <p><strong>Dispositivo Afectado:</strong> ${incidencia.dispositivo_afectado}</p>
-                    <p><strong>Salón:</strong> ${incidencia.salon}</p>
-                    <p><strong>Descripción:</strong> ${incidencia.descripcion_estado}</p>
-                    <p><strong>Comentarios:</strong> ${incidencia.comentarios}</p>
-                    <p><strong>Estado:</strong> ${incidencia.estado_incidencia}</p>
-                `;
-
-                // Mostrar el modal
-                modal.classList.remove('hidden');
-            } catch (error) {
-                alert("Error al mostrar detalles de la incidencia: " + error.message);
-                console.error("Error al mostrar detalles de la incidencia:", error);
-            }
+            modal.classList.remove('hidden');
         }
 
         function cerrarModal() {
             const modal = document.getElementById('detallesModal');
             modal.classList.add('hidden');
         }
+
+        function buscarPorTicket() {
+            const ticketInput = document.getElementById('ticketInput').value.trim(); // Eliminar espacios en blanco
+            const incidenciaIndex = incidencias.findIndex(incidencia => incidencia.ticket === ticketInput);
+
+            if (incidenciaIndex !== -1) {
+                mostrarDetalles(incidenciaIndex);
+            } else {
+                alert('Incidencia no encontrada.');
+            }
+        }
+
     </script>
 {% endblock content %}

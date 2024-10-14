@@ -1,15 +1,23 @@
 import requests
+import secrets
 from datetime import datetime
 
-from django.shortcuts import render #, redirect
+from django.shortcuts import render
 from django.views import View
 from django.core.cache import cache
-from django.http import JsonResponse
 from django.contrib import messages
 
-from soporte.models import DescripcionDelEstado, DispositivoAfectado, Salon, TipoDeIncidencia
-#from soporte.serializers import IncidenciaSerializer
+from soporte.models import Incidencia, DescripcionDelEstado, DispositivoAfectado, Salon, TipoDeIncidencia
 from .forms import IncidenciaForm
+
+
+def generar_ticket():
+    # Obtén solo los segundos desde el inicio del día como un entero (0-86399)
+    timestamp = int(datetime.now().strftime("%H%M%S"))
+    # Genera un número aleatorio de 2 dígitos
+    random_number = secrets.randbelow(100)
+    # Combina la marca de tiempo con el número aleatorio y asegúrate de que sea de 8 dígitos
+    return f"{timestamp:06d}{random_number:02d}"
 
 # Create your views here.
 class LoginView(View):
@@ -24,7 +32,9 @@ class HistorialView(View):
         
         for clave in claves:
             incidencia = cache.get(clave)  # Recuperar cada incidencia
+            
             if incidencia:
+                
                 # Obtener los nombres correspondientes a los IDs
                 salon_nombre = Salon.objects.get(id=incidencia['salon']).salon
                 tipo_incidencia_nombre = TipoDeIncidencia.objects.get(id=incidencia['tipo_incidencia']).tipo
@@ -58,6 +68,7 @@ class ReportarIncidenciasView(View):
         if form.is_valid():
             # Obtén datos del formulario
             incidencia_data = {
+                "ticket": generar_ticket(),
                 "emisor": form.cleaned_data['emisor'],
                 "salon": request.POST.get('salon'),  # Debe estar en el formulario
                 "tipo_incidencia": request.POST.get('tipo_incidencia'),  # Debe estar en el formulario
