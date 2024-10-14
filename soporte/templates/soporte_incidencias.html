@@ -4,6 +4,8 @@
 
 {% block content %}
     <div class="container mx-auto mt-5"> <!-- Agregado un contenedor para el espaciado -->
+        <h2 class="text-2xl font-bold mb-4">NUEVAS INCIDENCIAS</h2>
+
         {% for incidencia in incidencias %}
             <div class="bg-white rounded-lg shadow p-4 mb-6">
                 <p class="font-bold mb-2">Incidencia [{{ incidencia.fecha|date:"H:i:s" }}]</p>

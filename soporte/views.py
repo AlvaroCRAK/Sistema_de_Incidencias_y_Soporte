@@ -64,7 +64,7 @@ class LoginView(View):
 @method_decorator(login_required, name='dispatch')
 class IncidenciasView(View):
     def get(self, request, *args, **kwargs):
-        incidencias = Incidencia.objects.all()  # Traer todas las incidencias
+        incidencias = Incidencia.objects.filter(estado_incidencia="Por atender") # Traer todas las incidencias
         return render(request, "soporte_incidencias.html", {'incidencias': incidencias})
 
     def post(self, request, *args, **kwargs):

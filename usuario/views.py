@@ -40,8 +40,10 @@ class HistorialView(View):
                 tipo_incidencia_nombre = TipoDeIncidencia.objects.get(id=incidencia['tipo_incidencia']).tipo
                 dispositivo_afectado_nombre = DispositivoAfectado.objects.get(id=incidencia['dispositivo_afectado']).dispositivo
                 descripcion_estado_nombre = DescripcionDelEstado.objects.get(id=incidencia['descripcion_estado']).descripcion
+                estado_actualizado = Incidencia.objects.get(ticket=incidencia["ticket"]).estado_incidencia
                 
                 # Agregar los nombres al diccionario
+                incidencia["estado_incidencia"] = estado_actualizado
                 incidencia['salon'] = salon_nombre
                 incidencia['tipo_incidencia'] = tipo_incidencia_nombre
                 incidencia['dispositivo_afectado'] = dispositivo_afectado_nombre
