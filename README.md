@@ -30,14 +30,6 @@ Este proyecto utiliza una arquitectura monolítica basada en el patrón **MVT (M
 * **Base de Datos:** SQLite (Entorno de desarrollo) / PostgreSQL (Compatible para producción).
 * **Control de Versiones:** Git & GitHub.
 
-## 📸 Capturas de Pantalla
-
-> *Nota: Puedes subir imágenes de tu proyecto en la pestaña "Issues" o en una carpeta `/assets` y vincularlas aquí para que los reclutadores vean la interfaz.*
-
-| Login | Dashboard | Crear Ticket |
-|-------|-----------|--------------|
-| ![Login](link_a_tu_imagen_1.png) | ![Dashboard](link_a_tu_imagen_2.png) | ![Form](link_a_tu_imagen_3.png) |
-
 ## 🔧 Instalación y Despliegue Local
 
 Sigue estos pasos para ejecutar el proyecto en tu máquina local:
