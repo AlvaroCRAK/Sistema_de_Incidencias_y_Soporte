@@ -1,6 +1,6 @@
 # 🛡️ Sistema de Incidencias y Soporte Técnico
 
-> 🏆 **Proyecto Galardonado con el 3er Lugar** en la Hackathon de [Nombre de la Universidad/Evento].
+> 🏆 **Proyecto Galardonado con el 3er Lugar** en la Hackathon de [UNMSM].
 
 ![Estado](https://img.shields.io/badge/Estado-Terminado-success)
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
