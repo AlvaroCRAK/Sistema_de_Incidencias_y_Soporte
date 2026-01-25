@@ -67,7 +67,9 @@ Sigue estos pasos para ejecutar el proyecto en tu máquina local:
 
 ## 👥 Autores
 
-* **Álvaro Cencia** ([@AlvaroCRAK](https://github.com/AlvaroCRAK)) - *Desarrollo Full Stack & Arquitectura*
-* **[Nombre de tu compañero si deseas ponerlo]** ([@guzmdav16](https://github.com/guzmdav16)) - *Colaborador*
+* **Alvaro Cencia** - *Desarrollo Full Stack & Arquitectura*
+* **David Guzmán** - *Backend*
+* **Iris Hanampa** - *Frontend*
+* **Jean Rosales** - *Base de Datos*
 
 ---
